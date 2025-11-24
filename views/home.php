@@ -1,11 +1,16 @@
 <?php 
+// On définit le titre de la page pour le layout
+$titre = "Accueil - DungeonXplorer";
 
+// On démarre la "mémoire tampon" (output buffering)
+// Tout ce qui est écrit en dessous ne s'affiche pas, mais est stocké en mémoire
 ob_start(); 
 ?>
 
 <div class="row justify-content-center align-items-center h-100">
     <div class="col-lg-8 text-center">
         
+        <!-- Icône Dragon animée -->
         <div class="mb-4 icone-ambiance">
             <i class="fa-solid fa-dragon fa-5x"></i>
         </div>
@@ -31,6 +36,7 @@ ob_start();
         </div>
 
         <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+            <!-- Note les liens : ils pointent vers index.php avec un paramètre ?route=... -->
             <a href="index.php?route=register" class="btn bouton-action-principal btn-lg px-5 py-3">
                 <i class="fa-solid fa-scroll me-2"></i> Créer mon Héros
             </a>
@@ -44,8 +50,9 @@ ob_start();
 </div>
 
 <?php 
+// On récupère tout ce qui a été généré ci-dessus et on le met dans la variable $contenu
+$contenu = ob_get_clean();
 
-$contenu = ob_get_clean(); 
-
-require __DIR__ . '/../layout.php';
+// Enfin, on appelle le squelette (layout) qui va afficher $contenu au bon endroit
+require 'views/layout.php';
 ?>
