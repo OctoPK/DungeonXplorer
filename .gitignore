@@ -1,0 +1,28 @@
+# --- Fichiers Système (Mac & Windows) ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- IDE (Visual Studio Code & autres) ---
+# On ne partage pas sa config perso d'éditeur avec les copains
+.vscode/
+.idea/
+*.sublime-workspace
+
+# --- PHP & Dépendances ---
+# Si jamais vous utilisez Composer plus tard
+vendor/
+composer.lock
+
+# --- Sécurité & Config (TRÈS IMPORTANT) ---
+# Ici, on ignore les fichiers qui contiennent vos mots de passe BDD.
+# Adapte le nom selon votre fichier réel (ex: db.php, config.php, database.php)
+#config.php
+#db.php
+connect.php
+.env
+
+# --- Fichiers temporaires ou logs ---
+*.log
+tmp/
+temp/
