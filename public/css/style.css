@@ -1,0 +1,217 @@
+/* =========================================
+   1. VARIABLES & CHARTE GRAPHIQUE
+   [Source: PDF Page 4 - Couleurs]
+   ========================================= */
+:root {
+    --couleur-fond-main: #1A1A1A;       /* Noir doux */
+    --couleur-fond-second: #2E2E2E;     /* Gris anthracite (Cartes/Panneaux) */
+    --couleur-texte: #E5E5E5;           /* Gris très clair */
+    --couleur-texte-gris: #BFBFBF;      /* Gris moyen */
+    
+    --or: #C4975E;          /* Or Médiéval (Actions, Liens) */
+    --rouge-sombre: #8B1E1E; /* Rouge (Danger, Hover) */
+    --vert-jade: #4A7A66;    /* Vert (Succès) */
+    --bleu-magie: #2b5fa5;   /* Pour le magicien */
+}
+
+/* =========================================
+   2. STYLE GÉNÉRAL
+   ========================================= */
+body {
+    background-color: var(--couleur-fond-main);
+    color: var(--couleur-texte);
+    font-family: 'Roboto', sans-serif; /* Texte courant */
+}
+
+/* Police Gothique pour les titres */
+h1, h2, h3, h4, h5, h6, 
+.titre-site, 
+.titre-principal,
+.bouton-action-principal {
+    font-family: 'Pirata One', cursive;
+    letter-spacing: 1px;
+}
+
+/* Classe utilitaire pour le fond (appliquée au body) */
+.fond-site {
+    background-color: var(--couleur-fond-main);
+}
+
+/* =========================================
+   3. NAVIGATION (Header)
+   ========================================= */
+.barre-navigation {
+    background-color: #0d0d0d; /* Un noir un peu plus profond que le fond */
+    border-bottom: 2px solid var(--or); /* Liseré doré */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    padding: 1rem 0;
+}
+
+.titre-site {
+    font-size: 2rem;
+    color: var(--or) !important;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.lien-nav {
+    color: var(--couleur-texte-gris) !important;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.lien-nav:hover, .lien-nav.active {
+    color: var(--or) !important;
+}
+
+/* Menu déroulant (Mon Héros) */
+.menu-deroulant-sombre {
+    background-color: var(--couleur-fond-second);
+    border: 1px solid var(--or);
+}
+
+.menu-deroulant-sombre .dropdown-item {
+    color: var(--couleur-texte);
+}
+
+.menu-deroulant-sombre .dropdown-item:hover {
+    background-color: var(--or);
+    color: #000;
+}
+
+/* =========================================
+   4. PAGE D'ACCUEIL (Spécifique)
+   ========================================= */
+
+/* L'icône Dragon */
+.icone-ambiance {
+    color: var(--or);
+    text-shadow: 0 0 20px rgba(196, 151, 94, 0.3);
+    animation: flotter 3s ease-in-out infinite;
+}
+
+/* Animation douce pour le dragon */
+@keyframes flotter {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.titre-principal {
+    color: #fff;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0px #000;
+}
+
+/* Le Panneau Édito (Cadre Gris) */
+.panneau-sombre {
+    background-color: var(--couleur-fond-second);
+    border: 1px solid #444; /* Bordure discrète */
+    border-left: 5px solid var(--or); /* Accent doré à gauche */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    color: var(--couleur-texte);
+}
+
+.texte-intro {
+    font-weight: 300;
+}
+
+.separateur-dore {
+    border-color: var(--or);
+    opacity: 0.6;
+}
+
+.signature-equipe {
+    color: var(--or);
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   5. [cite_start]BOUTONS & ACTIONS [cite: 115-120]
+   ========================================= */
+
+/* Bouton Principal (Créer Héros) - Style OR */
+.bouton-action-principal {
+    background-color: var(--or);
+    color: #1A1A1A; /* Texte sombre sur fond or pour lisibilité */
+    border: 2px solid var(--or);
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.bouton-action-principal:hover {
+    background-color: var(--rouge-sombre); /* Rouge sombre au survol */
+    border-color: var(--rouge-sombre);
+    color: #fff;
+    transform: scale(1.05); /* Petit zoom */
+}
+
+/* Bouton Secondaire (Connexion) - Style Outline */
+.bouton-action-secondaire {
+    background-color: transparent;
+    color: var(--couleur-texte);
+    border: 2px solid var(--couleur-texte-gris);
+    font-family: 'Pirata One', cursive;
+    font-size: 1.4rem;
+}
+
+.bouton-action-secondaire:hover {
+    border-color: var(--or);
+    color: var(--or);
+}
+
+/* Petits boutons navbar */
+.bouton-connexion {
+    border: 1px solid var(--or);
+    color: var(--or);
+}
+.bouton-connexion:hover {
+    background-color: var(--or);
+    color: #000;
+}
+
+.bouton-inscription {
+    background-color: var(--rouge-sombre);
+    color: white;
+    border: 1px solid var(--rouge-sombre);
+}
+.bouton-inscription:hover {
+    background-color: #a32424;
+    color: white;
+}
+
+/* =========================================
+   6. BADGES CLASSES
+   ========================================= */
+.badge {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 0.5em 0.8em;
+}
+
+.classe-guerrier { background-color: var(--rouge-sombre); }
+.classe-voleur { background-color: var(--vert-jade); }
+.classe-mage { background-color: var(--bleu-magie); }
+
+/* =========================================
+   7. PIED DE PAGE (Footer)
+   ========================================= */
+.pied-de-page {
+    background-color: #0d0d0d;
+    border-top: 1px solid #333;
+}
+
+.texte-gris {
+    color: var(--couleur-texte-gris);
+    font-size: 0.9rem;
+}
+
+.pied-de-page i {
+    color: var(--couleur-texte-gris);
+    transition: color 0.3s;
+}
+
+.pied-de-page i:hover {
+    color: var(--or);
+    cursor: pointer;
+}
