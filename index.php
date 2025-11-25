@@ -9,7 +9,7 @@ switch ($route) {
         break;
 
     case 'login':
-        echo "Page de connexion (à venir)";
+        require 'views/auth/login.php';
         break;
 
     case 'register':
