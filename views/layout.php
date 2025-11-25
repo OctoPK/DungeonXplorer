@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Titre dynamique : si $titre existe on l'affiche, sinon titre par défaut -->
     <title><?= $titre ?? 'DungeonXplorer' ?></title>
     
     <!-- Bootstrap CSS -->
@@ -16,7 +15,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 
-    <!-- Notre CSS perso (chemin relatif depuis index.php) -->
     <link rel="stylesheet" href="public/css/style.css">
 </head>
 
@@ -73,10 +71,8 @@
     </header>
 
     <!-- CONTENU PRINCIPAL -->
-    <!-- C'est ici que s'affichera le contenu de home.php, register.php, etc. -->
     <main class="container my-5 flex-grow-1 contenu-page">
         
-        <!-- Affichage des messages d'erreur ou succès s'il y en a -->
         <?php if(isset($_SESSION['flash_message'])): ?>
             <div class="alert alert-info">
                 <?= $_SESSION['flash_message']; unset($_SESSION['flash_message']); ?>
