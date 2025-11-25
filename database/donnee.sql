@@ -146,3 +146,22 @@ CREATE TABLE Hero_Progress (
     FOREIGN KEY (hero_id) REFERENCES Hero(id),
     FOREIGN KEY (chapter_id) REFERENCES Chapter(id)
 );
+
+--Table pour les utilisateurs de la base de données
+CREATE TABLE Users (
+    role ENUM('admin', 'player') DEFAULT 'player',
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table intermédiaire pour lier les utilisateurs aux héros (Users - Hero)
+CREATE TABLE User_Heroes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    hero_id INT,
+    FOREIGN KEY (user_id) REFERENCES Users(id),
+    FOREIGN KEY (hero_id) REFERENCES Hero(id)
+);
