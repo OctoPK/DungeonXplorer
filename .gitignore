@@ -26,3 +26,5 @@ connect.php
 *.log
 tmp/
 temp/
+
+clé SSH/
