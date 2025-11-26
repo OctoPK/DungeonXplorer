@@ -74,5 +74,4 @@ ob_start();
 <?php
 $contenu = ob_get_clean();
 require 'views/layout.php';
-
 ?>
