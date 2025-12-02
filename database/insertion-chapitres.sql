@@ -74,7 +74,7 @@ INSERT INTO Chapter (id, content, image) VALUES
 (23, 'Les geôles sont glaciales. Au fond du couloir, une silhouette massive garde une porte blindée.', 'geoles.jpg'),
 (24, 'Un prisonnier squelettique vous appelle : "La clé... l''Ogre la porte à sa ceinture !"', 'prisonnier.jpg'),
 (25, 'L''Ogre Geôlier se retourne en grognant. Il lève une massue énorme. Préparez-vous !', 'boss_ogre.jpg'),
-(26, 'L'Ogre s'effondre. Vous récupérez la Clé de Fer Noir sur son cadavre.', 'win_ogre.jpg'),
+(26, 'L''Ogre s''effondre. Vous récupérez la Clé de Fer Noir sur son cadavre.', 'win_ogre.jpg'),
 
 -- --- ZONE 3 : TOUR (30-40) ---
 (30, 'Vous montez l''escalier en colimaçon vers la haute tour. Deux portes : Bibliothèque ou Laboratoire ?', 'stairs.jpg'),
