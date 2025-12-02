@@ -9,11 +9,11 @@ switch ($route) {
         break;
 
     case 'login':
-        echo "Page de connexion (à venir)";
+        require 'views/auth/login.php';
         break;
 
     case 'register':
-        echo "Page d'inscription (à venir)";
+        require 'views/auth/register.php';
         break;
 
     case 'logout':
