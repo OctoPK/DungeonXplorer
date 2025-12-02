@@ -1,15 +1,13 @@
 <?php
 
+require_once "../config/db.php";
+require "../config/PasswordOption.php";
+
 /*Gère inscription/connexion/déconnexion des utilisateurs :
 Il reçoit les données du formulaire de connexion ($_POST)
 Il vérifie si le mot de passe correspond au hash dans la BDD
 Il crée la $_SESSION si c'est bon ou renvoie une erreur si c'est faux
 */
-$options = [
-    'memory_cost' => 1 <<17,
-    'time_cost' => 4,
-    'threads' => 2,
-];
 
 
 class AuthController {
@@ -39,10 +37,18 @@ class AuthController {
 
         $hash = password_hash($password, PASSWORD_ARGON2ID, $options);
 
+        $stmt = $db->prepare("insert into users (username, password_hash, email) values (:user, :passwd, :email)");
+        $stmt->execute(array("user" => $username, "passwd" => $hash, "email" => $email));
+
+
     }
 
     public function login($username, $password) {
-        require __DIR__ . '/../views/auth/login.php';
+        $stmt = $db->query("select count(*) as exist from users where username = :user and password_hash = :passwd");
+        $row = $stmt->fetch();
+        if ($row['exist'] == 0) {
+            $_SESSION['message_erreur'] = "mot de passe ou tuilisateur inconnus";
+        }
     }
 
     public function logout() {
