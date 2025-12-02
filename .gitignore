@@ -17,8 +17,7 @@ composer.lock
 # --- Sécurité & Config (TRÈS IMPORTANT) ---
 # Ici, on ignore les fichiers qui contiennent vos mots de passe BDD.
 # Adapte le nom selon votre fichier réel (ex: db.php, config.php, database.php)
-#config.php
-#db.php
+
 connect.php
 .env
 
@@ -28,3 +27,4 @@ tmp/
 temp/
 
 clé SSH/
+/config/db.php
