@@ -24,7 +24,7 @@ ob_start();
                 <form action="index.php?route=register" method="POST">
 
                     <div class="mb-3">
-                        <label for="username" class="form-label">Nom de héros</label>
+                        <label for="username" class="form-label">Username</label>
                         <input
                             type="text"
                             class="form-control"

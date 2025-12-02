@@ -13,7 +13,7 @@ switch ($route) {
         break;
 
     case 'register':
-        echo "Page d'inscription (à venir)";
+        require 'views/auth/register.php';
         break;
 
     case 'logout':
