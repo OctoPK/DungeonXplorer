@@ -95,7 +95,10 @@ $router->addRoute('logout', 'AuthController@logout');
 
 $router->addRoute('game', 'GameController@index');          
 $router->addRoute('game/create', 'GameController@create');
+<<<<<<< HEAD
 $router->addRoute('game/store', 'GameController@store'); 
+=======
+>>>>>>> e1813cdb4758a2c22507968f695d2d8c276d3b1a
 $router->addRoute('chapter/{id}', 'GameController@play');   
 
 // on appele la methode route
