@@ -10,7 +10,7 @@ $titre = "Créer mon Héros"; ob_start(); ?>
             <div class="card-body">
                 
                
-                <form action="index.php?route=create_heros_action" method="POST">
+            <form action="game/store" method="POST">
                     
                    
                     <div class="mb-4">
