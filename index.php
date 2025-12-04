@@ -5,14 +5,14 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
-
-require 'autoload.php'; // parce que on a rajouter la fonction autoload.php
+require 'autoload.php'; 
 
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'dungeonxplorer');
 define('DB_USER', 'root');
 define('DB_PASS', '');
+
 
 class Router
 {
@@ -33,15 +33,14 @@ class Router
     {
         $url = parse_url($url, PHP_URL_PATH);
 
-        // Enlève le préfixe du debut de l'URL 
+        // --- CORRECTION WINDOWS ---
+        // On s'assure que le préfixe n'a pas de backslashs bizarres
         if ($this->prefix && strpos($url, '/' . $this->prefix) === 0) {
             $url = substr($url, strlen($this->prefix) + 1);
         }
 
-        // Enlève les barres obliques en trop
         $url = trim($url, '/');
 
-        // Vérification de la correspondance de l'URL à une route définie
         foreach ($this->routes as $route => $controllerMethod) {
             $routeParts = explode('/', $route);
             $urlParts = explode('/', $url);
@@ -63,43 +62,47 @@ class Router
                     list($controllerName, $methodName) = explode('@', $controllerMethod);
                     if (class_exists($controllerName)) {
                         $controller = new $controllerName();
-                        
                         if (method_exists($controller, $methodName)) {
                             call_user_func_array([$controller, $methodName], $params);
-                            return;
+                            return; 
                         } else {
-                            die("Erreur : La méthode $methodName n'existe pas dans $controllerName");
+                            die("Erreur : Méthode $methodName introuvable dans $controllerName");
                         }
                     } else {
-                        die("Erreur : Le contrôleur $controllerName n'existe pas.");
+                        die("Erreur : Contrôleur $controllerName introuvable (Vérifie le nom du fichier et la Majuscule !)");
                     }
                 }
-
-                // require 'views/404.php';
             }
         }
+        
+        // SI ON ARRIVE ICI, C'EST QU'AUCUNE ROUTE N'A MATCHÉ
+        echo "<div style='font-family:sans-serif; text-align:center; margin-top:50px;'>";
+        echo "<h1 style='color:red;'>⚠️ Erreur 404 : Route non trouvée</h1>";
+        echo "<p>Le routeur a reçu l'URL : <strong>/$url</strong></p>";
+        echo "<p>Il n'a trouvé aucune correspondance dans la liste des routes.</p>";
+        echo "</div>";
     }
 }
 
-// config des routes 
+// On remplace les anti-slashs (\) par des slashs (/)
+$scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME']);
+$dossier_projet = dirname($scriptName);
 
-
-$router = new Router('DungeonXplorer');
+$router = new Router($dossier_projet);
 
 $router->addRoute('', 'MainController@index');      
 $router->addRoute('home', 'MainController@index');  
+
 
 $router->addRoute('login', 'AuthController@login');
 $router->addRoute('register', 'AuthController@register');
 $router->addRoute('logout', 'AuthController@logout');
 
+
 $router->addRoute('game', 'GameController@index');          
 $router->addRoute('game/create', 'GameController@create');
-<<<<<<< HEAD
 $router->addRoute('game/store', 'GameController@store'); 
-=======
->>>>>>> e1813cdb4758a2c22507968f695d2d8c276d3b1a
 $router->addRoute('chapter/{id}', 'GameController@play');   
 
-// on appele la methode route
-$router->route(trim($_SERVER['REQUEST_URI'], '/'));
+$router->route($_SERVER['REQUEST_URI']);
+?>

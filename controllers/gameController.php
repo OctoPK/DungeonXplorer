@@ -1,17 +1,20 @@
 <?php
-require_once 'config/Database.php'; // On charge notre outil de connexion
+// PAS DE REQUIRE ICI ! L'autoload.php s'occupe de charger 'models/Database.php' tout seul.
 
 class GameController {
 
-    // Cette fonction remplace le case 'game': ou 'profile':
     public function index() {
-        // Vérification session
+        // On s'assure que la session est démarrée
+        if (session_status() === PHP_SESSION_NONE) { session_start(); }
+
+        // Simulation utilisateur connecté (A retirer quand le login marchera)
         if (!isset($_SESSION['user_id'])) { $_SESSION['user_id'] = 1; }
         $userId = $_SESSION['user_id'];
 
+        // L'autoloader va trouver la classe Database dans models/Database.php
         $db = Database::getConnection();
 
-        // Ta requête SQL pour le profil
+        // Requête pour récupérer le héros
         $sql = "SELECT Hero.*, Class.name AS class_name 
                 FROM Hero 
                 JOIN User_Heroes ON Hero.id = User_Heroes.hero_id
@@ -22,16 +25,17 @@ class GameController {
         $stmt->execute([$userId]);
         $hero = $stmt->fetch();
 
+        // Affichage de la vue
         if ($hero) {
             require 'views/game/profile.php';
         } else {
-            // Si pas de héros, on redirige vers la création (attention à la nouvelle route)
-            header('Location: game/create');
+            // Si pas de héros, on redirige vers la création
+            // Attention : on utilise un chemin relatif adapté au nouveau routeur
+            header('Location: game/create'); 
             exit();
         }
     }
 
-    // Cette fonction remplace le case 'create_heros':
     public function create() {
         $db = Database::getConnection();
         
@@ -41,14 +45,18 @@ class GameController {
         require 'views/game/create_heros.php';
     }
 
-    // Cette fonction remplace le case 'create_heros_action':
     public function store() {
+        if (session_status() === PHP_SESSION_NONE) { session_start(); }
         if (!isset($_SESSION['user_id'])) { $_SESSION['user_id'] = 1; }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $db = Database::getConnection();
 
             try {
+                // SÉCURITÉ : Vérifier si les champs existent
+                if (!isset($_POST['hero_name']) || !isset($_POST['class_id'])) {
+                    die("Erreur : Vous devez choisir un nom ET une classe ! <a href='create'>Retour</a>");
+                }
                 $nom = htmlspecialchars($_POST['hero_name']);
                 $classId = (int)$_POST['class_id'];
                 $userId = $_SESSION['user_id'];
@@ -84,8 +92,8 @@ class GameController {
 
                     $db->commit();
 
-                    // Redirection vers la route 'game' (qui affiche le profil)
-                    // Attention : avec ce nouveau routeur, on redirige vers l'URL propre
+                    // Redirection vers le profil (route 'game')
+                    // '../game' permet de remonter d'un cran pour revenir à la racine du routeur
                     header('Location: ../game'); 
                     exit();
                 }
@@ -96,35 +104,8 @@ class GameController {
         }
     }
     
-    // Pour le chapitre (déjà prévu par ton collègue)
     public function play($id) {
         echo "On joue le chapitre $id";
     }
 }
 ?>
-```
-
-### Étape 4 : Mettre à jour `index.php` (Ajouter la route manquante)
-
-Ton collègue a oublié une route ! Il a mis la route pour *voir* le formulaire (`game/create`), mais pas celle pour *recevoir* le formulaire (l'action).
-
-Dans le fichier `index.php` de ton collègue, ajoute cette ligne juste en dessous de `game/create` :
-
-```php
-// ...
-$router->addRoute('game', 'GameController@index');          
-$router->addRoute('game/create', 'GameController@create');
-// AJOUTE CETTE LIGNE :
-$router->addRoute('game/store', 'GameController@store'); 
-// ...
-```
-
-### Étape 5 : Mettre à jour ton Formulaire (Vue)
-
-Enfin, il faut dire à ton formulaire HTML d'envoyer les données vers cette nouvelle route "propre" (`game/store`) et non plus vers `index.php?route=...`.
-
-Ouvre **`views/game/create_heros.php`** et modifie la balise `<form>` :
-<!-- On change l'action pour correspondre à la route du nouveau Router 
-<form action="game/store" method="POST">-->
-
-```php

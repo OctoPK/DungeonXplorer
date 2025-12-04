@@ -15,7 +15,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="public/css/style.css">
+        <!-- Le slash / au début renvoie à la racine du serveur (localhost) -->
+    <!-- Adapte "DungeonXplorer" si ton dossier s'appelle autrement -->
+    <link rel="stylesheet" href="/DungeonXplorer/public/css/style.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100 fond-site">
