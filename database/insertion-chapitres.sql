@@ -1,16 +1,36 @@
 -- ============================================================
--- 0. NETTOYAGE
+-- 0. NETTOYAGE (VERSION CORRIGÉE "DELETE")
 -- ============================================================
 SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE Links;
-TRUNCATE TABLE Encounter;
-TRUNCATE TABLE Monster_Loot;
-TRUNCATE TABLE Chapter_Treasure;
-TRUNCATE TABLE Hero_Progress;
-TRUNCATE TABLE Inventory;
-TRUNCATE TABLE Monster;
-TRUNCATE TABLE Items;
-TRUNCATE TABLE Chapter;
+
+-- On utilise DELETE à la place de TRUNCATE pour éviter l'erreur #1701
+DELETE FROM Links;
+ALTER TABLE Links AUTO_INCREMENT = 1; -- On remet le compteur à zéro
+
+DELETE FROM Encounter;
+ALTER TABLE Encounter AUTO_INCREMENT = 1;
+
+DELETE FROM Monster_Loot;
+ALTER TABLE Monster_Loot AUTO_INCREMENT = 1;
+
+DELETE FROM Chapter_Treasure;
+ALTER TABLE Chapter_Treasure AUTO_INCREMENT = 1;
+
+DELETE FROM Hero_Progress;
+ALTER TABLE Hero_Progress AUTO_INCREMENT = 1;
+
+DELETE FROM Inventory;
+ALTER TABLE Inventory AUTO_INCREMENT = 1;
+
+DELETE FROM Monster;
+ALTER TABLE Monster AUTO_INCREMENT = 1;
+
+DELETE FROM Items;
+ALTER TABLE Items AUTO_INCREMENT = 1;
+
+DELETE FROM Chapter;
+ALTER TABLE Chapter AUTO_INCREMENT = 1;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- ============================================================

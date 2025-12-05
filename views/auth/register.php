@@ -17,14 +17,22 @@ ob_start();
         <div class="card panneau-sombre shadow-lg">
             <div class="card-body p-4">
 
+                <!-- AFFICHAGE DES ERREURS -->
+                <?php if(isset($_SESSION['message_erreur'])): ?>
+                    <div class="alert alert-danger text-center">
+                        <?= $_SESSION['message_erreur']; unset($_SESSION['message_erreur']); ?>
+                    </div>
+                <?php endif; ?>
+
                 <p class="lead texte-intro text-center mb-4">
                     Inscrivez-vous pour commencer votre quête dans le Val Perdu.
                 </p>
 
-                <form action="index.php?route=register" method="POST">
+                <!-- CORRECTION ICI : action="register" -->
+                <form action="register" method="POST">
 
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
+                        <label for="username" class="form-label">Nom d'utilisateur</label>
                         <input
                             type="text"
                             class="form-control"
@@ -60,12 +68,13 @@ ob_start();
                     </div>
 
                     <div class="mb-4">
-                        <label for="password_confirm" class="form-label">Confirmer le mot de passe</label>
+                        <label for="confirm_password" class="form-label">Confirmer le mot de passe</label>
+                        <!-- Attention : le name doit être "confirm_password" pour correspondre à AuthController -->
                         <input
                             type="password"
                             class="form-control"
-                            id="password_confirm"
-                            name="password_confirm"
+                            id="confirm_password"
+                            name="confirm_password"
                             placeholder="confirmation"
                             required
                         >
@@ -74,16 +83,17 @@ ob_start();
                     <div class="d-grid">
                         <button type="submit" class="btn bouton-action-principal btn-lg py-3">
                             <i class="fa-solid fa-scroll me-2"></i>
-                            Créer mon Héros
+                            S'inscrire
                         </button>
                     </div>
-</form>
+                </form>
 
                 <hr class="separateur-dore my-4">
 
                 <p class="text-center mb-0">
                     Déjà un aventurier ?
-                    <a href="index.php?route=login" class="lien-dore">
+                    <!-- CORRECTION DU LIEN : vers "login" -->
+                    <a href="login" class="lien-dore">
                         Reprendre l'Aventure
                     </a>
                 </p>
@@ -96,5 +106,6 @@ ob_start();
 
 <?php
 $contenu = ob_get_clean();
-require 'views/layout.php';
+// On remonte d'un niveau (../) car on est dans views/auth/
+require __DIR__ . '/../../views/layout.php';
 ?>

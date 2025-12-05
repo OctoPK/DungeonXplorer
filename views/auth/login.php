@@ -17,11 +17,28 @@ ob_start();
         <div class="card panneau-sombre shadow-lg">
             <div class="card-body p-4">
 
+                <!-- BLOC D'ERREUR (Si mot de passe faux) -->
+                <?php if(isset($_SESSION['message_erreur'])): ?>
+                    <div class="alert alert-danger text-center">
+                        <i class="fa-solid fa-circle-exclamation me-2"></i>
+                        <?= $_SESSION['message_erreur']; unset($_SESSION['message_erreur']); ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- BLOC DE SUCCÈS (Si compte créé) -->
+                <?php if(isset($_SESSION['flash_message'])): ?>
+                    <div class="alert alert-success text-center">
+                        <i class="fa-solid fa-check-circle me-2"></i>
+                        <?= $_SESSION['flash_message']; unset($_SESSION['flash_message']); ?>
+                    </div>
+                <?php endif; ?>
+
                 <p class="lead texte-intro text-center mb-4">
                     Entrez vos informations pour retrouver votre héros.
                 </p>
 
-                <form action="index.php?route=login" method="POST">
+                <!-- CORRECTION ICI : action="login" pour envoyer au Routeur -->
+                <form action="login" method="POST">
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Adresse e-mail</label>
@@ -60,7 +77,8 @@ ob_start();
 
                 <p class="text-center mb-0">
                     Pas encore de héros ?
-                    <a href="index.php?route=register" class="lien-dore">
+                    <!-- CORRECTION DU LIEN : vers "register" -->
+                    <a href="register" class="lien-dore">
                         Créer un personnage
                     </a>
                 </p>
@@ -73,5 +91,6 @@ ob_start();
 
 <?php
 $contenu = ob_get_clean();
-require 'views/layout.php';
+// On remonte d'un niveau (../) car on est dans views/auth/
+require __DIR__ . '/../../views/layout.php';
 ?>

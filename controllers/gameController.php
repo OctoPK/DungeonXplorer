@@ -47,7 +47,7 @@ class GameController {
 
     public function store() {
         if (session_status() === PHP_SESSION_NONE) { session_start(); }
-        if (!isset($_SESSION['user_id'])) { $_SESSION['user_id'] = 1; }
+        
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $db = Database::getConnection();
