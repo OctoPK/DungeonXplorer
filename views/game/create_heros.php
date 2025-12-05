@@ -10,7 +10,7 @@ $titre = "Créer mon Héros"; ob_start(); ?>
             <div class="card-body">
                 
                
-            <form action="game/store" method="POST">
+           <form action="/DungeonXplorer/game/store" method="POST">
                     
                    
                     <div class="mb-4">
