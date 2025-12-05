@@ -33,8 +33,7 @@ class Router
     {
         $url = parse_url($url, PHP_URL_PATH);
 
-        // --- CORRECTION WINDOWS ---
-        // On s'assure que le préfixe n'a pas de backslashs bizarres
+        
         if ($this->prefix && strpos($url, '/' . $this->prefix) === 0) {
             $url = substr($url, strlen($this->prefix) + 1);
         }

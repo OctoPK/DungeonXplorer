@@ -1,12 +1,15 @@
 <?php 
-$titre = "Accueil - DungeonXplorer";
+$titre = "Accueil - DungeonXplorer"; 
+
+$root = dirname($_SERVER['SCRIPT_NAME']); 
+$root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
 
 ob_start(); 
 ?>
 
 <div class="row justify-content-center align-items-center h-100">
     <div class="col-lg-8 text-center">
-        
+    
         <div class="mb-4 icone-ambiance">
             <i class="fa-solid fa-dragon fa-5x"></i>
         </div>
@@ -31,21 +34,40 @@ ob_start();
             </div>
         </div>
 
+       
         <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-            <a href="index.php?route=register" class="btn bouton-action-principal btn-lg px-5 py-3">
-                <i class="fa-solid fa-scroll me-2"></i> Créer mon Héros
-            </a>
             
-            <a href="index.php?route=login" class="btn bouton-action-secondaire btn-lg px-5 py-3">
-                <i class="fa-solid fa-key me-2"></i> Reprendre l'aventure
-            </a>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                
+                
+                <a href="<?= $root ?>/game/create" class="btn bouton-action-principal btn-lg px-5 py-3">
+                    <i class="fa-solid fa-scroll me-2"></i> Créer un nouveau Héros
+                </a>
+                
+            
+                <a href="<?= $root ?>/game" class="btn bouton-action-secondaire btn-lg px-5 py-3">
+                    <i class="fa-solid fa-dungeon me-2"></i> Continuer l'aventure
+                </a>
+
+            <?php else: ?>
+
+                
+                <a href="<?= $root ?>/register" class="btn bouton-action-principal btn-lg px-5 py-3">
+                    <i class="fa-solid fa-user-plus me-2"></i> Créer mon Compte
+                </a>
+                
+                <a href="<?= $root ?>/login" class="btn bouton-action-secondaire btn-lg px-5 py-3">
+                    <i class="fa-solid fa-key me-2"></i> Connexion
+                </a>
+
+            <?php endif; ?>
+
         </div>
 
     </div>
 </div>
 
 <?php 
-$contenu = ob_get_clean();
-
-require 'views/layout.php';
+$contenu = ob_get_clean(); 
+require 'views/layout.php'; 
 ?>

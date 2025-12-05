@@ -1,20 +1,19 @@
 <?php
-// PAS DE REQUIRE ICI ! L'autoload.php s'occupe de charger 'models/Database.php' tout seul.
+/
 
 class GameController {
 
     public function index() {
-        // On s'assure que la session est démarrée
+        
         if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
-        // Simulation utilisateur connecté (A retirer quand le login marchera)
+        
         if (!isset($_SESSION['user_id'])) { $_SESSION['user_id'] = 1; }
         $userId = $_SESSION['user_id'];
 
-        // L'autoloader va trouver la classe Database dans models/Database.php
+      
         $db = Database::getConnection();
 
-        // Requête pour récupérer le héros
         $sql = "SELECT Hero.*, Class.name AS class_name 
                 FROM Hero 
                 JOIN User_Heroes ON Hero.id = User_Heroes.hero_id
@@ -25,12 +24,11 @@ class GameController {
         $stmt->execute([$userId]);
         $hero = $stmt->fetch();
 
-        // Affichage de la vue
+        
         if ($hero) {
             require 'views/game/profile.php';
         } else {
-            // Si pas de héros, on redirige vers la création
-            // Attention : on utilise un chemin relatif adapté au nouveau routeur
+           
             header('Location: game/create'); 
             exit();
         }
@@ -53,7 +51,7 @@ class GameController {
             $db = Database::getConnection();
 
             try {
-                // SÉCURITÉ : Vérifier si les champs existent
+               
                 if (!isset($_POST['hero_name']) || !isset($_POST['class_id'])) {
                     die("Erreur : Vous devez choisir un nom ET une classe ! <a href='create'>Retour</a>");
                 }
@@ -92,8 +90,7 @@ class GameController {
 
                     $db->commit();
 
-                    // Redirection vers le profil (route 'game')
-                    // '../game' permet de remonter d'un cran pour revenir à la racine du routeur
+                    
                     header('Location: ../game'); 
                     exit();
                 }
