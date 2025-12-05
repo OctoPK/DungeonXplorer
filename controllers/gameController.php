@@ -53,6 +53,10 @@ class GameController {
             $db = Database::getConnection();
 
             try {
+                // SÉCURITÉ : Vérifier si les champs existent
+                if (!isset($_POST['hero_name']) || !isset($_POST['class_id'])) {
+                    die("Erreur : Vous devez choisir un nom ET une classe ! <a href='create'>Retour</a>");
+                }
                 $nom = htmlspecialchars($_POST['hero_name']);
                 $classId = (int)$_POST['class_id'];
                 $userId = $_SESSION['user_id'];
