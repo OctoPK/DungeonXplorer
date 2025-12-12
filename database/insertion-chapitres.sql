@@ -34,6 +34,30 @@ ALTER TABLE Chapter AUTO_INCREMENT = 1;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- ============================================================
+-- 1. CLASSES (AJOUTÉ ICI)
+-- ============================================================
+INSERT INTO Class (id, name, description, base_pv, base_mana, strength, initiative, max_items) VALUES 
+(1, 'Guerrier', 'Un combattant robuste, expert au corps à corps.', 100, 0, 10, 5, 5),
+(2, 'Voleur', 'Rapide et agile, il frappe avant les autres.', 70, 10, 6, 8, 8),
+(3, 'Magicien', 'Faible physiquement mais doté de pouvoirs dévastateurs.', 60, 50, 4, 4, 5);
+
+-- ============================================================
+-- 1.5 NIVEAUX (PROGRESSION)
+-- ============================================================
+-- Exemple simple pour les niveaux 2 et 3
+INSERT INTO Level (class_id, level, required_xp, pv_bonus, mana_bonus, strength_bonus, initiative_bonus) VALUES
+-- Guerrier
+(1, 2, 100, 10, 0, 2, 1),
+(1, 3, 300, 15, 0, 3, 1),
+-- Voleur
+(2, 2, 100, 8, 2, 1, 2),
+(2, 3, 300, 10, 5, 2, 2),
+-- Magicien
+(3, 2, 100, 5, 10, 0, 1),
+(3, 3, 300, 8, 15, 1, 1);
+
+
+-- ============================================================
 -- 1. ITEMS & MONSTRES
 -- ============================================================
 INSERT INTO Items (id, name, description, item_type) VALUES

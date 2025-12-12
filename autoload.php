@@ -1,10 +1,5 @@
 <?php
-/**
- * AUTOLOADER (Le Chargeur Magique)
- * * Son rôle : Dès que tu utilises un mot clé comme "new GameController()",
- * PHP va lancer cette fonction pour trouver le fichier correspondant.
- * Plus besoin de faire des "require" partout !
- */
+
 spl_autoload_register(function ($class_name) {
     
     $dossiers = [

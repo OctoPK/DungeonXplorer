@@ -24,7 +24,7 @@
                 
                 <p class="text-white-50">Niveau <?= $hero['current_level'] ?> | XP: <?= $hero['xp'] ?></p>
 
-           >
+           
                 <a href="index.php?route=play" class="btn bouton-action-principal w-100 mt-3">
                     <i class="fa-solid fa-scroll me-2"></i> Lire le Chapitre 1
                 </a>

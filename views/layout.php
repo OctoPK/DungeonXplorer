@@ -86,7 +86,7 @@ $root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $r
 
     
     <main class="container my-5 flex-grow-1 contenu-page">
-        >
+        
         <?php if(isset($_SESSION['flash_message'])): ?>
             <div class="alert alert-success text-center">
                 <?= $_SESSION['flash_message']; unset($_SESSION['flash_message']); ?>
