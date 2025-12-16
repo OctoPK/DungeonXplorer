@@ -7,11 +7,16 @@ error_reporting(E_ALL);
 session_start();
 require 'autoload.php'; 
 
+if(!file_exists(__DIR__ . '/.env')) {
+    die("Le fichier .env est manquant. Veuillez le créer à partir de .env.example et le configurer.");
+}
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'dungeonxplorer');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+$env = parse_ini_file(__DIR__ . '/.env');
+
+define('DB_HOST', $env['DB_HOST']);
+define('DB_NAME', $env['DB_NAME']);
+define('DB_USER', $env['DB_USER']);
+define('DB_PASS', $env['DB_PASS']);
 
 
 class Router
