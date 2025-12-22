@@ -129,10 +129,27 @@ class GameController {
         $combat = $stmtCombat->fetchAll(PDO::FETCH_ASSOC);
 
         if($combat) {
-            require 'views/game/combat.php';
+            
         } else {
             require 'views/game/chapitre.php';
         }
+    }
+
+    public function tourCombat($attaquant, $defenseur) {
+
+        require 'views/game/combat.php';
+
+        /* TODO combat
+    action possible attaque physique, attaque magique (si perso magi et mana dispo)
+    utiliser une potion
+    exemple : regardé règle de combat.pdf parti pseudo code pour un tour de combat
+    
+    me reste, faire les classe monstre et héro pour stocké les donnée dedans
+    le tour de combat*/
+
+
+        require __DIR__ . "/../layout.php";
+        return $attaquant->pv > 0 && $defenseur->pv > 0 ? tourCombat($defenseur, $attaquant) : "Fin du combat";
     }
 }
 ?>        

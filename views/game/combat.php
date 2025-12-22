@@ -26,9 +26,6 @@ ob_start();
     <div class="chapter-content">
         <?= $contenu ?>
     </div>
-
-    <!--TODO combat-->
-
 </div>
 
-<?php $contenu = ob_get_clean(); require __DIR__ . "/../layout.php"; ?>
+<?php $contenu = ob_get_clean(); ?>
