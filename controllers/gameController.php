@@ -102,7 +102,27 @@ class GameController {
     }
     
     public function play($id) {
-        echo "On joue le chapitre $id";
+        if (session_status() === PHP_SESSION_NONE) { session_start(); }
+        $db = Database::getConnection();
+        $chapterId = (int) $id;
+
+        $stmt = $db->prepare("SELECT * FROM Chapter WHERE id = ?");
+        $stmt->execute([$chapterId]);
+        $chapter = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$chapter) {
+            header('Location: /');
+            exit();
+        }
+
+        $stmtLinks = $db->prepare(
+            "SELECT Links.id, Links.next_chapter_id, Links.description
+             FROM Links
+             WHERE Links.chapter_id = ?"
+        );
+        $stmtLinks->execute([$chapterId]);
+        $links = $stmtLinks->fetchAll(PDO::FETCH_ASSOC);
+
+        require 'views/game/chapitre.php';
     }
 }
 ?>

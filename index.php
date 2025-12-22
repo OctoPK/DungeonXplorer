@@ -106,7 +106,7 @@ $router->addRoute('logout', 'AuthController@logout');
 $router->addRoute('game', 'GameController@index');          
 $router->addRoute('game/create', 'GameController@create');
 $router->addRoute('game/store', 'GameController@store'); 
-$router->addRoute('chapter/{id}', 'GameController@play');   
+$router->addRoute('chapter/{id}', 'GameController@play');
 
 $router->route($_SERVER['REQUEST_URI']);
 ?>
