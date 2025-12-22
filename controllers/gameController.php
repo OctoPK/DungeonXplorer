@@ -122,7 +122,17 @@ class GameController {
         $stmtLinks->execute([$chapterId]);
         $links = $stmtLinks->fetchAll(PDO::FETCH_ASSOC);
 
-        require 'views/game/chapitre.php';
+        $stmtCombat = $db->prepare(
+            "select monster_id from Encounter where chapter_id = ?"
+        );
+        $stmtCombat->execute([$chapterId]);
+        $combat = $stmtCombat->fetchAll(PDO::FETCH_ASSOC);
+
+        if($combat) {
+            require 'views/game/combat.php';
+        } else {
+            require 'views/game/chapitre.php';
+        }
     }
 }
-?>
+?>        
