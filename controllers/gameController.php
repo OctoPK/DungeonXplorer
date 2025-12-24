@@ -127,8 +127,15 @@ class GameController {
             $stmtHero = $db->prepare("SELECT hero_id FROM User_Heroes WHERE user_id = ?");
             $stmtHero->execute([$userId]);
             $heroData = $stmtHero->fetch(PDO::FETCH_ASSOC);
-            if ($heroData) { //on récupère l'équipement du héro pour savoir où ajouter les armes/boucliers
+
+            if ($heroData) {
                 $heroId = $heroData['hero_id'];
+                //on met à joue la progression, d'abord on umet les chapitres précédents en complété et ensuite on met le nouveau chapitre traveré
+                $stmtUpdtatePrevioursChapter = $db->prepare("UPDATE Hero_Progress SET status='Completed', completion_date=NOW() WHERE hero_id = ? AND chapter_id <> ? AND status='InProgress'");
+                $stmtUpdtatePrevioursChapter->execute([$heroId, $chapterId]);
+                $stmtProgressChapter = $db->prepare("INSERT INTO Hero_Progress (hero_id, chapter_id, status, completion_date) values (?, ?, 'InProgress', NOW()) ON DUPLICATE KEY UPDATE status='InProgress', completion_date=NOW()");
+                $stmtProgressChapter->execute([$heroId, $chapterId]);
+                //on récupère l'équipement du héro pour savoir où mettre les items trouvés sur le chapitre
                 $stmtHeroEquip = $db->prepare("SELECT primary_weapon_item_id, secondary_weapon_item_id, shield_item_id FROM Hero WHERE id = ?");
                 $stmtHeroEquip->execute([$heroId]);
                 $heroEquip = $stmtHeroEquip->fetch(PDO::FETCH_ASSOC);
