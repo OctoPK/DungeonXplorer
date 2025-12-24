@@ -94,19 +94,53 @@ $dossier_projet = dirname($scriptName);
 
 $router = new Router($dossier_projet);
 
+//Route principale
 $router->addRoute('', 'MainController@index');      
 $router->addRoute('home', 'MainController@index');  
 
 
+// Authentification
 $router->addRoute('login', 'AuthController@login');
 $router->addRoute('register', 'AuthController@register');
 $router->addRoute('logout', 'AuthController@logout');
 
 
+// Jeu
 $router->addRoute('game', 'GameController@index');          
 $router->addRoute('game/create', 'GameController@create');
 $router->addRoute('game/store', 'GameController@store'); 
 $router->addRoute('chapter/{id}', 'GameController@play');
+
+
+// Admin dashboard
+$router->addRoute('admin', 'AdminController@index');
+
+
+// Chapitres dashboard 
+$router->addRoute('admin/chapitres', 'ChapitreController@index');
+$router->addRoute('admin/chapitres/add', 'ChapitreController@add');
+$router->addRoute('admin/chapitres/store', 'ChapitreController@store');
+$router->addRoute('admin/chapitres/edit/{id}', 'ChapitreController@edit');
+$router->addRoute('admin/chapitres/update/{id}', 'ChapitreController@update');
+$router->addRoute('admin/chapitres/delete/{id}', 'ChapitreController@delete');
+
+
+// Items dashboard 
+$router->addRoute('admin/items', 'ItemsController@index');
+$router->addRoute('admin/items/add', 'ItemsController@add');
+$router->addRoute('admin/items/store', 'ItemsController@store');
+$router->addRoute('admin/items/edit/{id}', 'ItemsController@edit');
+$router->addRoute('admin/items/update/{id}', 'ItemsController@update');
+$router->addRoute('admin/items/delete/{id}', 'ItemsController@delete');
+
+
+// Monstres dashboard 
+$router->addRoute('admin/monstres', 'MonstreController@index');
+$router->addRoute('admin/monstres/add', 'MonstreController@add');
+$router->addRoute('admin/monstres/store', 'MonstreController@store');
+$router->addRoute('admin/monstres/edit/{id}', 'MonstreController@edit');
+$router->addRoute('admin/monstres/update/{id}', 'MonstreController@update');
+$router->addRoute('admin/monstres/delete/{id}', 'MonstreController@delete');
 
 $router->route($_SERVER['REQUEST_URI']);
 ?>
