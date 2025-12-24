@@ -122,6 +122,65 @@ class GameController {
         $stmtLinks->execute([$chapterId]);
         $links = $stmtLinks->fetchAll(PDO::FETCH_ASSOC);
 
+        if (isset($_SESSION['user_id'])) { //on récupère l'id du héro pour ajouter les items rencontrés dans les chapitres
+            $userId = $_SESSION['user_id'];
+            $stmtHero = $db->prepare("SELECT hero_id FROM User_Heroes WHERE user_id = ?");
+            $stmtHero->execute([$userId]);
+            $heroData = $stmtHero->fetch(PDO::FETCH_ASSOC);
+
+            if ($heroData) {
+                $heroId = $heroData['hero_id'];
+                //on met à joue la progression, d'abord on umet les chapitres précédents en complété et ensuite on met le nouveau chapitre traveré
+                $stmtUpdtatePrevioursChapter = $db->prepare("UPDATE Hero_Progress SET status='Completed', completion_date=NOW() WHERE hero_id = ? AND chapter_id <> ? AND status='InProgress'");
+                $stmtUpdtatePrevioursChapter->execute([$heroId, $chapterId]);
+                $stmtProgressChapter = $db->prepare("INSERT INTO Hero_Progress (hero_id, chapter_id, status, completion_date) values (?, ?, 'InProgress', NOW()) ON DUPLICATE KEY UPDATE status='InProgress', completion_date=NOW()");
+                $stmtProgressChapter->execute([$heroId, $chapterId]);
+                //on récupère l'équipement du héro pour savoir où mettre les items trouvés sur le chapitre
+                $stmtHeroEquip = $db->prepare("SELECT primary_weapon_item_id, secondary_weapon_item_id, shield_item_id FROM Hero WHERE id = ?");
+                $stmtHeroEquip->execute([$heroId]);
+                $heroEquip = $stmtHeroEquip->fetch(PDO::FETCH_ASSOC);
+                //on récupère les trésors du chapitre (on joint la table item pour connaitre le type et insérer au bon endroit)
+                $stmtTreasure = $db->prepare("SELECT ct.item_id, ct.quantity, i.item_type FROM Chapter_Treasure ct JOIN Items i ON ct.item_id = i.id WHERE ct.chapter_id = ?");
+                $stmtTreasure->execute([$chapterId]);
+                $treasures = $stmtTreasure->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($treasures as $treasure) {
+                    $itemId = $treasure['item_id'];
+                    $quantity = $treasure['quantity'];
+                    $itemType = $treasure['item_type'];
+                    
+                    if ($itemType === 'Arme') { //si c'est une arme ou un bouclier, on met dans la colonne adaptée dans la table héro vu qu'elle a une clonne poour
+                        if ($heroEquip['primary_weapon_item_id'] === null) {
+                            $stmtUpdate = $db->prepare("UPDATE Hero SET primary_weapon_item_id = ? WHERE id = ?");
+                            $stmtUpdate->execute([$itemId, $heroId]);
+                            $heroEquip['primary_weapon_item_id'] = $itemId;
+                        } elseif ($heroEquip['secondary_weapon_item_id'] === null) {
+                            $stmtUpdate = $db->prepare("UPDATE Hero SET secondary_weapon_item_id = ? WHERE id = ?");
+                            $stmtUpdate->execute([$itemId, $heroId]);
+                            $heroEquip['secondary_weapon_item_id'] = $itemId;
+                        } //si les deux emplacements sont occupés, on ne remplit pas
+                    } elseif ($itemType === 'Bouclier') {
+                        if ($heroEquip['shield_item_id'] === null) {
+                            $stmtUpdate = $db->prepare("UPDATE Hero SET shield_item_id = ? WHERE id = ?");
+                            $stmtUpdate->execute([$itemId, $heroId]);
+                            $heroEquip['shield_item_id'] = $itemId;
+                        }
+                    } else { //sinon si c'est d'un autre type on met dans l'inventaire
+                        $stmtCheck = $db->prepare("SELECT id, quantity FROM Inventory WHERE hero_id = ? AND item_id = ?");
+                        $stmtCheck->execute([$heroId, $itemId]);
+                        $existing = $stmtCheck->fetch(PDO::FETCH_ASSOC);
+                        if ($existing) { //si l'item est déjà présent dans l'inventaire on met juste qté + 1
+                            $newQuantity = $existing['quantity'] + $quantity;
+                            $stmtUpdate = $db->prepare("UPDATE Inventory SET quantity = ? WHERE id = ?");
+                            $stmtUpdate->execute([$newQuantity, $existing['id']]);
+                        } else { //sinon on l'ajoute
+                            $stmtInsert = $db->prepare("INSERT INTO Inventory (hero_id, item_id, quantity) VALUES (?, ?, ?)");
+                            $stmtInsert->execute([$heroId, $itemId, $quantity]);
+                        }
+                    }
+                }
+            }
+        }
+
         require 'views/game/chapitre.php';
     }
 }
