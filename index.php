@@ -117,13 +117,13 @@ $router->addRoute('admin', 'AdminController@index');
 
 
 // Chapitres dashboard 
+
 $router->addRoute('admin/chapitres', 'ChapitreController@index');
 $router->addRoute('admin/chapitres/add', 'ChapitreController@add');
 $router->addRoute('admin/chapitres/store', 'ChapitreController@store');
 $router->addRoute('admin/chapitres/edit/{id}', 'ChapitreController@edit');
 $router->addRoute('admin/chapitres/update/{id}', 'ChapitreController@update');
 $router->addRoute('admin/chapitres/delete/{id}', 'ChapitreController@delete');
-
 
 // Items dashboard 
 $router->addRoute('admin/items', 'ItemsController@index');
@@ -132,7 +132,6 @@ $router->addRoute('admin/items/store', 'ItemsController@store');
 $router->addRoute('admin/items/edit/{id}', 'ItemsController@edit');
 $router->addRoute('admin/items/update/{id}', 'ItemsController@update');
 $router->addRoute('admin/items/delete/{id}', 'ItemsController@delete');
-
 
 // Monstres dashboard 
 $router->addRoute('admin/monstres', 'MonstreController@index');

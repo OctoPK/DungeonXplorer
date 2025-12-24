@@ -18,7 +18,9 @@ class ChapitreController {
 		$image = $_POST['image'] ?? '';
 		$stmt = $db->prepare('INSERT INTO Chapter (content, image) VALUES (?, ?)');
 		$stmt->execute([$content, $image]);
-		header('Location: /admin/chapitres');
+		$root = dirname($_SERVER['SCRIPT_NAME']);
+		$root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
+		header('Location: ' . $root . '/admin/chapitres');
 		exit();
 	}
 
@@ -36,7 +38,9 @@ class ChapitreController {
 		$image = $_POST['image'] ?? '';
 		$stmt = $db->prepare('UPDATE Chapter SET content = ?, image = ? WHERE id = ?');
 		$stmt->execute([$content, $image, $id]);
-		header('Location: /admin/chapitres');
+		$root = dirname($_SERVER['SCRIPT_NAME']);
+		$root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
+		header('Location: ' . $root . '/admin/chapitres');
 		exit();
 	}
 
@@ -44,7 +48,9 @@ class ChapitreController {
 		$db = Database::getConnection();
 		$stmt = $db->prepare('DELETE FROM Chapter WHERE id = ?');
 		$stmt->execute([$id]);
-		header('Location: /admin/chapitres');
+		$root = dirname($_SERVER['SCRIPT_NAME']);
+		$root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
+		header('Location: ' . $root . '/admin/chapitres');
 		exit();
 	}
 }

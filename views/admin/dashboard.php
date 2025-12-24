@@ -27,15 +27,16 @@ $monsters = $db->query('SELECT * FROM Monster')->fetchAll();
                 <td><?= htmlspecialchars(mb_strimwidth($chapter['content'], 0, 60, '...')) ?></td>
                 <td><?= htmlspecialchars($chapter['image']) ?></td>
                 <td>
-                    <a href="?action=edit_chapter&id=<?= $chapter['id'] ?>">Modifier</a> |
-                    <a href="?action=delete_chapter&id=<?= $chapter['id'] ?>" onclick="return confirm('Supprimer ce chapitre ?')">Supprimer</a>
+                    <?php $root = dirname($_SERVER['SCRIPT_NAME']); $root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/'); ?>
+                    <a href="<?= $root ?>/admin/chapitres/edit/<?= $chapter['id'] ?>">Modifier</a> |
+                    <a href="<?= $root ?>/admin/chapitres/delete/<?= $chapter['id'] ?>" onclick="return confirm('Supprimer ce chapitre ?')">Supprimer</a>
                 </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 
-<h2>Items <a href="?action=add_item">[Ajouter]</a></h2>
+<h2>Items <a href="<?= $root ?>/admin/items/add">[Ajouter]</a></h2>
 <table>
     <thead>
         <tr>
@@ -54,15 +55,15 @@ $monsters = $db->query('SELECT * FROM Monster')->fetchAll();
                 <td><?= htmlspecialchars($item['description']) ?></td>
                 <td><?= htmlspecialchars($item['item_type']) ?></td>
                 <td>
-                    <a href="?action=edit_item&id=<?= $item['id'] ?>">Modifier</a> |
-                    <a href="?action=delete_item&id=<?= $item['id'] ?>" onclick="return confirm('Supprimer cet item ?')">Supprimer</a>
+                    <a href="<?= $root ?>/admin/items/edit/<?= $item['id'] ?>">Modifier</a> |
+                    <a href="<?= $root ?>/admin/items/delete/<?= $item['id'] ?>" onclick="return confirm('Supprimer cet item ?')">Supprimer</a>
                 </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 
-<h2>Monstres <a href="?action=add_monster">[Ajouter]</a></h2>
+<h2>Monstres <a href="<?= $root ?>/admin/monstres/add">[Ajouter]</a></h2>
 <table>
     <thead>
         <tr>
@@ -87,8 +88,8 @@ $monsters = $db->query('SELECT * FROM Monster')->fetchAll();
                 <td><?= htmlspecialchars($monster['strength']) ?></td>
                 <td><?= htmlspecialchars($monster['xp']) ?></td>
                 <td>
-                    <a href="?action=edit_monster&id=<?= $monster['id'] ?>">Modifier</a> |
-                    <a href="?action=delete_monster&id=<?= $monster['id'] ?>" onclick="return confirm('Supprimer ce monstre ?')">Supprimer</a>
+                    <a href="<?= $root ?>/admin/monstres/edit/<?= $monster['id'] ?>">Modifier</a> |
+                    <a href="<?= $root ?>/admin/monstres/delete/<?= $monster['id'] ?>" onclick="return confirm('Supprimer ce monstre ?')">Supprimer</a>
                 </td>
             </tr>
         <?php endforeach; ?>

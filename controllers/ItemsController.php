@@ -19,7 +19,9 @@ class ItemsController {
 		$item_type = $_POST['item_type'] ?? '';
 		$stmt = $db->prepare('INSERT INTO Items (name, description, item_type) VALUES (?, ?, ?)');
 		$stmt->execute([$name, $description, $item_type]);
-		header('Location: /admin/items');
+		$root = dirname($_SERVER['SCRIPT_NAME']);
+		$root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
+		header('Location: ' . $root . '/admin/items');
 		exit();
 	}
 
@@ -38,7 +40,9 @@ class ItemsController {
 		$item_type = $_POST['item_type'] ?? '';
 		$stmt = $db->prepare('UPDATE Items SET name = ?, description = ?, item_type = ? WHERE id = ?');
 		$stmt->execute([$name, $description, $item_type, $id]);
-		header('Location: /admin/items');
+		$root = dirname($_SERVER['SCRIPT_NAME']);
+		$root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
+		header('Location: ' . $root . '/admin/items');
 		exit();
 	}
 
@@ -46,7 +50,9 @@ class ItemsController {
 		$db = Database::getConnection();
 		$stmt = $db->prepare('DELETE FROM Items WHERE id = ?');
 		$stmt->execute([$id]);
-		header('Location: /admin/items');
+		$root = dirname($_SERVER['SCRIPT_NAME']);
+		$root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
+		header('Location: ' . $root . '/admin/items');
 		exit();
 	}
 }

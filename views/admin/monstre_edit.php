@@ -1,8 +1,10 @@
 <?php
+$root = dirname($_SERVER['SCRIPT_NAME']);
+$root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
 // Formulaire d'édition de monstre
 ?>
 <h1>Modifier le monstre</h1>
-<form method="post" action="/admin/monstres/update/<?= $monster['id'] ?>">
+<form method="post" action="<?= $root ?>/admin/monstres/update/<?= $monster['id'] ?>">
     <label>Nom :</label><br>
     <input type="text" name="name" value="<?= htmlspecialchars($monster['name']) ?>" required><br><br>
     <label>PV :</label><br>
@@ -18,5 +20,5 @@
     <label>XP :</label><br>
     <input type="number" name="xp" value="<?= htmlspecialchars($monster['xp']) ?>" required><br><br>
     <button type="submit">Mettre à jour</button>
-    <a href="/admin/monstres">Annuler</a>
+    <a href="<?= $root ?>/admin/monstres">Annuler</a>
 </form>

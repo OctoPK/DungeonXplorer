@@ -2,7 +2,8 @@
 // Liste des monstres
 ?>
 <h1>Liste des monstres</h1>
-<a href="/admin/monstres/add">Ajouter un monstre</a>
+<?php $root = dirname($_SERVER['SCRIPT_NAME']); $root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/'); ?>
+<a href="<?= $root ?>/admin/monstres/add">Ajouter un monstre</a>
 <table border="1" cellpadding="5">
     <tr><th>ID</th><th>Nom</th><th>PV</th><th>Mana</th><th>Initiative</th><th>Force</th><th>XP</th><th>Actions</th></tr>
     <?php foreach ($monsters as $monster): ?>
@@ -15,8 +16,8 @@
             <td><?= htmlspecialchars($monster['strength']) ?></td>
             <td><?= htmlspecialchars($monster['xp']) ?></td>
             <td>
-                <a href="/admin/monstres/edit/<?= $monster['id'] ?>">Modifier</a> |
-                <a href="/admin/monstres/delete/<?= $monster['id'] ?>" onclick="return confirm('Supprimer ce monstre ?')">Supprimer</a>
+                <a href="<?= $root ?>/admin/monstres/edit/<?= $monster['id'] ?>">Modifier</a> |
+                <a href="<?= $root ?>/admin/monstres/delete/<?= $monster['id'] ?>" onclick="return confirm('Supprimer ce monstre ?')">Supprimer</a>
             </td>
         </tr>
     <?php endforeach; ?>

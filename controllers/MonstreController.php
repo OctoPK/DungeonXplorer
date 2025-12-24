@@ -23,7 +23,9 @@ class MonstreController {
 		$xp = $_POST['xp'] ?? 0;
 		$stmt = $db->prepare('INSERT INTO Monster (name, pv, mana, initiative, strength, attack, xp) VALUES (?, ?, ?, ?, ?, ?, ?)');
 		$stmt->execute([$name, $pv, $mana, $initiative, $strength, $attack, $xp]);
-		header('Location: /admin/monstres');
+		$root = dirname($_SERVER['SCRIPT_NAME']);
+		$root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
+		header('Location: ' . $root . '/admin/monstres');
 		exit();
 	}
 
@@ -46,7 +48,9 @@ class MonstreController {
 		$xp = $_POST['xp'] ?? 0;
 		$stmt = $db->prepare('UPDATE Monster SET name = ?, pv = ?, mana = ?, initiative = ?, strength = ?, attack = ?, xp = ? WHERE id = ?');
 		$stmt->execute([$name, $pv, $mana, $initiative, $strength, $attack, $xp, $id]);
-		header('Location: /admin/monstres');
+		$root = dirname($_SERVER['SCRIPT_NAME']);
+		$root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
+		header('Location: ' . $root . '/admin/monstres');
 		exit();
 	}
 
