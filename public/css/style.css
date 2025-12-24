@@ -196,4 +196,97 @@ h1, h2, h3, h4, h5, h6,
 }
 .texte-gris { color: var(--couleur-texte-gris); font-size: 0.9rem; }
 .pied-de-page i { color: var(--couleur-texte-gris); transition: color 0.3s; }
-.pied-de-page i:hover { color: var(--or); cursor: pointer; }
+.pied-de-page i:hover { color: var(--or); cursor: pointer; }    
+
+/* =========================================
+   AFFICHAGE DES CHAPITRES
+   ========================================= */
+
+.chapitre {
+    max-width: 100%;
+    margin: auto;
+    padding: 2rem;
+    background-color: var(--couleur-fond-second);
+    border-left: 5px solid var(--or);
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+}
+
+.chapter-description {
+    display: flex;
+    margin-bottom: 2rem;
+    flex-direction: column;
+}
+
+
+.chapitre h2 {
+    font-size: 2rem;
+    color: var(--or);
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--or);
+}
+
+.chapter-image {
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.chapter-image img {
+    width: 100%;
+    max-width: 700px;
+    border: 2px solid var(--or);
+    border-radius: 6px; 
+}
+
+.chapter-content {
+    font-size: 1.1rem;
+    color: var(--couleur-texte);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.chapter-choices {
+    width:50%;
+    padding: 2rem;
+    border-radius: 6px;
+    border: 2px solid var(--or);
+}
+
+.chapter-choices h3 {
+    font-size: 1.8rem;
+    color: var(--or);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.chapter-choices ul {
+    list-style: none;
+    padding: 0;
+}
+
+.chapter-choices li {
+    margin-bottom: 1rem;
+}
+
+.chapter-choices a {
+    display: block;
+    padding: 1rem 1.5rem;
+    color: var(--couleur-texte);
+    text-decoration: none;
+    border: 2px solid var(--couleur-texte-gris);
+    border-radius: 6px;
+    font-size: 1.1rem;
+}
+
+.chapter-choices a:hover {
+    background-color: var(--or);
+    color: #1A1A1A;
+    border-color: var(--or);
+}    
+
