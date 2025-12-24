@@ -144,8 +144,7 @@ class GameController {
     utiliser une potion
     exemple : regardé règle de combat.pdf parti pseudo code pour un tour de combat
     
-    me reste, faire les classe monstre et héro pour stocké les donnée dedans
-    le tour de combat*/
+    me reste le tour de combat à faire*/
 
 
         require __DIR__ . "/../layout.php";
