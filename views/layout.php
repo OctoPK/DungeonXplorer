@@ -75,6 +75,12 @@ $root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $r
                                 </a>
                             </li>
 
+                            <li class="nav-item ms-2">
+                                <a href="<?= $root ?>/admin" class="btn bouton-admin">
+                                    <i class="fa-solid fa-circle-info me-1"></i> Admin  
+                                </a>
+                            </li>
+
                         <?php endif; ?>
                        
 
