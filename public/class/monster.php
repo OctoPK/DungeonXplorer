@@ -13,7 +13,7 @@ class Monster
     public function __construct($name, $health, $mana, $initiative, $strength, $xp, $treasure)
     {
         $this->name = $name;
-        $this->health = $health;
+        $this->pv = $pv;
         $this->mana = $mana;
         $this->initiative = $initiative;
         $this->strength = $strength;
@@ -26,9 +26,9 @@ class Monster
         return $this->name;
     }
 
-    public function getHealth()
+    public function getPV()
     {
-        return $this->health;
+        return $this->pv;
     }
 
     public function getMana()
@@ -38,7 +38,7 @@ class Monster
 
     public function takeDamage($damage)
     {
-        $this->health -= $damage;
+        $this->pv -= $damage;
     }
 
     public function getInitiative(){
@@ -49,7 +49,7 @@ class Monster
         return $this->strength;
     }
 
-    public function getxp()
+    public function getXP()
     {
         return $this->xp;
     }

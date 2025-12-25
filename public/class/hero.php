@@ -30,11 +30,11 @@ class Hero
     }
 
     public function getMana() {
-        return $this->mane;
+        return $this->mana;
     }
 
     public function getStrength(){
-        return $this->strength:
+        return $this->strength;
     }
 
     public function getInventory(){
@@ -77,7 +77,7 @@ class Hero
         $this->xp = $xp;
     }
 
-    public functin setCurrentLevel($currentLevel) {
+    public function setCurrentLevel($currentLevel) {
         $this->currentLevel = $currentLevel;
     }
 }
