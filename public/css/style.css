@@ -290,3 +290,344 @@ h1, h2, h3, h4, h5, h6,
     border-color: var(--or);
 }    
 
+/* =========================================
+   DASHBOARD ADMIN
+   ========================================= */
+.dashboard-admin {
+    max-width: 1200px;
+    margin: 2rem auto;
+    background-color: var(--couleur-fond-second);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+    padding: 2.5rem 2rem;
+    border-left: 8px solid var(--or);
+}
+
+.dashboard-admin h1 {
+    color: var(--or);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    text-shadow: 2px 2px 8px #000;
+}
+
+.dashboard-admin h2 {
+    color: var(--or);
+    font-size: 1.7rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--or);
+    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dashboard-admin a {
+    color: var(--or);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+.dashboard-admin a:hover {
+    color: var(--rouge-sombre);
+    text-decoration: underline;
+}
+
+.dashboard-admin table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2.5rem;
+    background-color: var(--couleur-fond-main);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.dashboard-admin th, .dashboard-admin td {
+    padding: 1rem 0.7rem;
+    text-align: left;
+}
+.dashboard-admin th {
+    background-color: var(--couleur-fond-second);
+    color: var(--or);
+    font-family: 'Pirata One', cursive;
+    font-size: 1.1rem;
+    border-bottom: 2px solid var(--or);
+}
+.dashboard-admin td {
+    color: var(--couleur-texte);
+    border-bottom: 1px solid #333;
+    font-size: 1rem;
+}
+.dashboard-admin tr:last-child td {
+    border-bottom: none;
+}
+.dashboard-admin tr:hover td {
+    background-color: var(--couleur-fond-second);
+    color: var(--or);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.dashboard-admin .actions a {
+    margin-right: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    border: 1px solid var(--or);
+    background: none;
+    color: var(--or);
+    font-size: 0.95rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+.dashboard-admin .actions a:hover {
+    background-color: var(--rouge-sombre);
+    color: #fff;
+    border-color: var(--rouge-sombre);
+}
+
+.dashboard-admin .ajouter {
+    font-size: 1rem;
+    color: #fff;
+    background-color: var(--vert-jade);
+    border: 2px solid var(--vert-jade);
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    font-family: 'Pirata One', cursive;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 8px rgba(74, 122, 102, 0.3);
+}
+
+.dashboard-admin .ajouter:hover {
+    background-color: #3a6a55;
+    border-color: var(--or);
+    color: var(--or);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(74, 122, 102, 0.5);
+    text-decoration: none;
+}
+
+/* =========================================
+   FORMULAIRES ADMIN
+   ========================================= */
+.formulaire-admin {
+    max-width: 700px;
+    margin: 2rem auto;
+    background-color: var(--couleur-fond-second);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+    padding: 2.5rem 2rem;
+    border-left: 8px solid var(--or);
+}
+
+.formulaire-admin h1 {
+    color: var(--or);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 8px #000;
+}
+
+.formulaire-admin form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.formulaire-admin label {
+    color: var(--or);
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.formulaire-admin input[type="text"],
+.formulaire-admin input[type="number"],
+.formulaire-admin textarea {
+    background-color: var(--couleur-fond-main);
+    color: var(--couleur-texte);
+    border: 2px solid #444;
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.formulaire-admin input[type="text"]:focus,
+.formulaire-admin input[type="number"]:focus,
+.formulaire-admin textarea:focus {
+    outline: none;
+    border-color: var(--or);
+    box-shadow: 0 0 8px rgba(196, 151, 94, 0.3);
+}
+
+.formulaire-admin textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.formulaire-admin button[type="submit"],
+.formulaire-admin .btn-soumettre {
+    background-color: var(--vert-jade);
+    color: #fff;
+    border: 2px solid var(--vert-jade);
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    font-family: 'Pirata One', cursive;
+}
+
+.formulaire-admin button[type="submit"]:hover,
+.formulaire-admin .btn-soumettre:hover {
+    background-color: #3a6a55;
+    border-color: var(--or);
+    color: var(--or);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(74, 122, 102, 0.5);
+}
+
+.formulaire-admin a.btn-annuler {
+    background-color: transparent;
+    color: var(--couleur-texte-gris);
+    border: 2px solid var(--couleur-texte-gris);
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    font-family: 'Pirata One', cursive;
+}
+
+.formulaire-admin a.btn-annuler:hover {
+    border-color: var(--rouge-sombre);
+    color: var(--rouge-sombre);
+    box-shadow: 0 4px 8px rgba(139, 30, 30, 0.3);
+}
+/* =========================================
+   LISTES ADMIN
+   ========================================= */
+.liste-admin {
+    max-width: 1200px;
+    margin: 2rem auto;
+    background-color: var(--couleur-fond-second);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+    padding: 2.5rem 2rem;
+    border-left: 8px solid var(--or);
+}
+
+.liste-admin h1 {
+    color: var(--or);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 8px #000;
+}
+
+.liste-admin .btn-ajouter {
+    display: inline-block;
+    background-color: var(--vert-jade);
+    color: #fff;
+    border: 2px solid var(--vert-jade);
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    font-family: 'Pirata One', cursive;
+    display: inline-block;
+    text-align: center;
+}
+
+.liste-admin .btn-ajouter:hover {
+    background-color: #3a6a55;
+    border-color: var(--or);
+    color: var(--or);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(74, 122, 102, 0.5);
+    text-decoration: none;
+}
+
+.liste-admin table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--couleur-fond-main);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.liste-admin th, .liste-admin td {
+    padding: 1rem 0.7rem;
+    text-align: left;
+}
+
+.liste-admin th {
+    background-color: var(--couleur-fond-second);
+    color: var(--or);
+    font-family: 'Pirata One', cursive;
+    font-size: 1.1rem;
+    border-bottom: 2px solid var(--or);
+}
+
+.liste-admin td {
+    color: var(--couleur-texte);
+    border-bottom: 1px solid #333;
+    font-size: 1rem;
+}
+
+.liste-admin tr:last-child td {
+    border-bottom: none;
+}
+
+.liste-admin tr:hover td {
+    background-color: var(--couleur-fond-second);
+    color: var(--or);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.liste-admin .actions a {
+    margin-right: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    border: 1px solid var(--or);
+    background: none;
+    color: var(--or);
+    font-size: 0.95rem;
+    transition: background-color 0.2s, color 0.2s;
+    text-decoration: none;
+}
+
+.liste-admin .actions a:hover {
+    background-color: var(--rouge-sombre);
+    color: #fff;
+    border-color: var(--rouge-sombre);
+}

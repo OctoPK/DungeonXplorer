@@ -1,25 +1,48 @@
 <?php
+$titre = 'Ajouter un monstre';
 $root = dirname($_SERVER['SCRIPT_NAME']);
 $root = ($root === '/' || $root === '\\') ? '' : rtrim(str_replace('\\', '/', $root), '/');
-// Formulaire d'ajout de monstre
+ob_start();
 ?>
-<h1>Ajouter un monstre</h1>
-<form method="post" action="<?= $root ?>/admin/monstres/store">
-    <label>Nom :</label><br>
-    <input type="text" name="name" required><br><br>
-    <label>PV :</label><br>
-    <input type="number" name="pv" required><br><br>
-    <label>Mana :</label><br>
-    <input type="number" name="mana"><br><br>
-    <label>Initiative :</label><br>
-    <input type="number" name="initiative" required><br><br>
-    <label>Force :</label><br>
-    <input type="number" name="strength" required><br><br>
-    <label>Attaque :</label><br>
-    <input type="text" name="attack"><br><br>
-    <label>XP :</label><br>
-    <input type="number" name="xp" required><br><br>
-    <button type="submit">Enregistrer</button>
-    <a href="<?= $root ?>/admin/monstres">Annuler</a>
-    <a href="/admin/monstres">Annuler</a>
-</form>
+<div class="formulaire-admin">
+    <h1>Ajouter un monstre</h1>
+    <form method="post" action="<?= $root ?>/admin/monstres/store">
+        <div class="form-group">
+            <label for="name">Nom :</label>
+            <input type="text" name="name" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="pv">PV :</label>
+            <input type="number" name="pv" id="pv" required>
+        </div>
+        <div class="form-group">
+            <label for="mana">Mana :</label>
+            <input type="number" name="mana" id="mana">
+        </div>
+        <div class="form-group">
+            <label for="initiative">Initiative :</label>
+            <input type="number" name="initiative" id="initiative" required>
+        </div>
+        <div class="form-group">
+            <label for="strength">Force :</label>
+            <input type="number" name="strength" id="strength" required>
+        </div>
+        <div class="form-group">
+            <label for="attack">Attaque :</label>
+            <input type="text" name="attack" id="attack">
+        </div>
+        <div class="form-group">
+            <label for="xp">XP :</label>
+            <input type="number" name="xp" id="xp" required>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-soumettre">Enregistrer</button>
+            <a href="<?= $root ?>/admin/monstres" class="btn-annuler">Annuler</a>
+        </div>
+    </form>
+</div>
+
+<?php
+$contenu = ob_get_clean();
+require __DIR__ . '/../../views/layout.php';
+?>
