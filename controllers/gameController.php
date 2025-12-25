@@ -181,7 +181,33 @@ class GameController {
             }
         }
 
-        require 'views/game/chapitre.php';
+        $stmtCombat = $db->prepare(
+            "select monster_id from Encounter where chapter_id = ?"
+        );
+        $stmtCombat->execute([$chapterId]);
+        $combat = $stmtCombat->fetchAll(PDO::FETCH_ASSOC);
+
+        if($combat) {
+            
+        } else {
+            require 'views/game/chapitre.php';
+        }
+    }
+
+    public function tourCombat($attaquant, $defenseur) {
+
+        require 'views/game/combat.php';
+
+        /* TODO combat
+    action possible attaque physique, attaque magique (si perso magi et mana dispo)
+    utiliser une potion
+    exemple : regardé règle de combat.pdf parti pseudo code pour un tour de combat
+    
+    me reste le tour de combat à faire*/
+
+
+        require __DIR__ . "/../layout.php";
+        return $attaquant->pv > 0 && $defenseur->pv > 0 ? tourCombat($defenseur, $attaquant) : "Fin du combat";
     }
 }
-?>
+?>        
