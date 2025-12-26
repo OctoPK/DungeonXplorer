@@ -221,9 +221,24 @@ class GameController {
 
                 $log = $result['log'];
                 $resultat = $result['resultat'];
+                $combatEnded = false;
+                $continueTarget = null;
+
                 if ($resultat === 'hero_victory' || $resultat === 'hero_defeat') {
                     unset($_SESSION['combat']);
+                    $combatEnded = true;
+
+                    if ($resultat === 'hero_defeat') {
+                        $continueTarget = 10; // rediriger vers chapitre 10 en cas de défaite
+                    } else {
+                        // en cas de victoire, récupérer le lien dont next_chapter_id != 10
+                        $stmtNext = $db->prepare("SELECT next_chapter_id FROM Links WHERE chapter_id = ? AND next_chapter_id <> 10 LIMIT 1");
+                        $stmtNext->execute([$chapterId]);
+                        $rowNext = $stmtNext->fetch(PDO::FETCH_ASSOC);
+                        $continueTarget = $rowNext['next_chapter_id'];
+                    }
                 }
+
                 $heroAfter = $result['hero'];
                 $monsterAfter = $result['monster'];
                 $stmtPot = $db->prepare("SELECT SUM(Inventory.quantity) as q FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ?");

@@ -43,7 +43,7 @@ if (!empty($chapter['image'])) {
     <?php endforeach; ?>
 </ul>
 
-<?php if (!isset($outcome)): ?>
+<?php if (!isset($resultat)): ?>
     <form method="post">
         <button type="submit" name="action" value="physical">Attaque physique</button>
         <?php if (isset($heroAfter['class_name']) && strtolower($heroAfter['class_name']) === 'magicien' && (int)($heroAfter['mana'] ?? 0) >= 5): ?>
@@ -53,7 +53,8 @@ if (!empty($chapter['image'])) {
         <button type="submit" name="action" value="potion_mana" <?= empty($hasPotionMana) ? 'disabled' : '' ?>><?= empty($hasPotionMana) ? 'Potion Mana (0)' : 'Utiliser Potion Mana' ?></button>
     </form>
 <?php else: ?>
-    <p>Résultat final: <?php if ($outcome === 'hero_victory'): ?>Victoire<?php elseif ($outcome === 'hero_defeat'): ?>Défaite<?php else: ?>Match nul<?php endif; ?></p>
+    <p>Résultat final: <?php if ($resultat === 'hero_victory'): ?>Victoire<?php elseif ($resultat === 'hero_defeat'): ?>Défaite<?php else: ?>Match nul<?php endif; ?></p>
+    <p><a href="/DungeonXplorer/chapter/<?= $continueTarget ?>">Continuer</a></p>
 <?php endif; ?>
 
 <?php $contenu = ob_get_clean(); require __DIR__ . "/../layout.php"; ?>
