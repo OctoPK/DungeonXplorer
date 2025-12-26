@@ -9,7 +9,7 @@ CREATE TABLE Class (
     name VARCHAR(50) NOT NULL,
     description TEXT,
     base_pv INT NOT NULL,
-    base_mana INT NOT NULL,
+    base_mana INT NOT NULL, 
     strength INT NOT NULL,
     initiative INT NOT NULL,
     max_items INT NOT NULL
@@ -20,7 +20,8 @@ CREATE TABLE Items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     description TEXT,
-    item_type VARCHAR(50) NOT NULL -- Ex: 'Arme', 'Armure', 'Potion'
+    item_type VARCHAR(50) NOT NULL -- Ex: 'Arme', 'Armure', 'Potion',
+    bonus INT DEFAULT NULL
 );
 
 -- 4. Création de la table Monster (Monstres)
@@ -32,7 +33,8 @@ CREATE TABLE Monster (
     initiative INT NOT NULL,
     strength INT NOT NULL,
     attack TEXT,
-    xp INT NOT NULL
+    xp INT NOT NULL,
+    image VARCHAR(255)
 );
 
 -- 5. Table intermédiaire Monster_Loot (Liaison Monstre - Objets)
@@ -73,7 +75,7 @@ CREATE TABLE Hero (
     FOREIGN KEY (armor_item_id) REFERENCES Items(id) ON DELETE SET NULL,
     FOREIGN KEY (primary_weapon_item_id) REFERENCES Items(id) ON DELETE SET NULL,
     FOREIGN KEY (secondary_weapon_item_id) REFERENCES Items(id) ON DELETE SET NULL,
-    FOREIGN KEY (shield_item_id) REFERENCES Items(id) ON DELETE SET NULL
+    FOREIGN KEY (shield_item_id) REFERENCES Items(id) ON DELETE SET NULL    
 );
 
 -- 7. Création de la table Level (Progression)
