@@ -10,14 +10,14 @@ class Monster
     protected $xp;
     protected $treasure;
 
-    public function __construct($name, $health, $mana, $initiative, $strength, $xp, $treasure)
+    public function __construct($name, $pv, $mana, $initiative, $strength, $xp, $treasure = null)
     {
         $this->name = $name;
-        $this->pv = $pv;
-        $this->mana = $mana;
-        $this->initiative = $initiative;
-        $this->strength = $strength;
-        $this->xp = $xp;
+        $this->pv = (int)$pv;
+        $this->mana = $mana === null ? null : (int)$mana;
+        $this->initiative = (int)$initiative;
+        $this->strength = (int)$strength;
+        $this->xp = (int)$xp;
         $this->treasure = $treasure;
     }
 

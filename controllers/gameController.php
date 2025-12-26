@@ -187,8 +187,65 @@ class GameController {
         $stmtCombat->execute([$chapterId]);
         $combat = $stmtCombat->fetchAll(PDO::FETCH_ASSOC);
 
-        if($combat) {
-            
+        if ($combat) {
+                $encounter = $combat[0];
+            $monsterId = (int)$encounter['monster_id'];
+            $stmtMon = $db->prepare("SELECT * FROM Monster WHERE id = ?");
+            $stmtMon->execute([$monsterId]);
+            $monster = $stmtMon->fetch(PDO::FETCH_ASSOC);
+            $stmtHeroFull = $db->prepare("SELECT Hero.*, Class.name AS class_name FROM Hero LEFT JOIN Class ON Hero.class_id = Class.id WHERE Hero.id = ?");
+            $stmtHeroFull->execute([$heroId]);
+            $heroFull = $stmtHeroFull->fetch(PDO::FETCH_ASSOC);
+            if (!$heroFull || !$monster) {
+                require 'views/game/chapitre.php';
+                return;
+            }
+            if (session_status() === PHP_SESSION_NONE) { session_start(); }
+            if (!isset($_SESSION['combat']) || !isset($_SESSION['combat']['chapter_id']) || $_SESSION['combat']['chapter_id'] != $chapterId) {
+                $_SESSION['combat'] = [
+                    'chapter_id' => $chapterId,
+                    'monster' => $monster
+                ];
+            }
+            $monsterState = $_SESSION['combat']['monster'];
+
+            require_once __DIR__ . "/../public/class/combat.php";
+            $engine = new CombatEngine($db);
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $action = isset($_POST['action']) ? $_POST['action'] : 'physical';
+                $stmtHeroFull->execute([$heroId]);
+                $heroFull = $stmtHeroFull->fetch(PDO::FETCH_ASSOC);
+                $result = $engine->processTurn($heroFull, $monsterState, $action);
+                $_SESSION['combat']['monster'] = $result['monster'];
+
+                $log = $result['log'];
+                $resultat = $result['resultat'];
+                if ($resultat === 'hero_victory' || $resultat === 'hero_defeat') {
+                    unset($_SESSION['combat']);
+                }
+                $heroAfter = $result['hero'];
+                $monsterAfter = $result['monster'];
+                $stmtPot = $db->prepare("SELECT SUM(Inventory.quantity) as q FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ?");
+                $stmtPot->execute([$heroId, 'Potion PV']);
+                $hasPotionHP = (int)$stmtPot->fetchColumn() > 0;
+                $stmtPot->execute([$heroId, 'Potion Mana']);
+                $hasPotionMana = (int)$stmtPot->fetchColumn() > 0;
+
+                require 'views/game/combat.php';
+                return;
+            }
+
+            $log = ["Combat préparé : vous pouvez choisir une action."];
+            $heroAfter = $heroFull;
+            $monsterAfter = $monsterState;
+            $stmtPot = $db->prepare("SELECT SUM(Inventory.quantity) as q FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ?");
+            $stmtPot->execute([$heroId, 'Potion PV']);
+            $hasPotionHP = (int)$stmtPot->fetchColumn() > 0;
+            $stmtPot->execute([$heroId, 'Potion Mana']);
+            $hasPotionMana = (int)$stmtPot->fetchColumn() > 0;
+
+            require 'views/game/combat.php';
         } else {
             require 'views/game/chapitre.php';
         }

@@ -1,31 +1,59 @@
 <?php
-if (!isset($chapter) || !is_array($chapter)) {
-    echo '<p>Chapitre introuvable.</p>';
+if (!isset($log) || !is_array($log)) {
+    echo '<p>Journal de combat introuvable.</p>';
     return;
 }
 
-$titre = 'Chapitre ' . (int)$chapter['id'];
-
-$contenu = nl2br(htmlspecialchars($chapter['content']));
-
-$imageUrl = null;
-if (!empty($chapter['image'])) {
-    $imageUrl = '/DungeonXplorer/public/images/chapters/' . $chapter['image']   ;
-}
-
+$titre = 'Combat';
 ob_start();
 ?>
 
-<div class="chapitre">
-    <h2><?= htmlspecialchars($titre) ?></h2>
+<h2><?= htmlspecialchars($titre) ?></h2>
 
-        <div class="chapter-image">
-            <img src="<?= htmlspecialchars($imageUrl) ?>" alt="Image du chapitre"/>
-        </div>
+<?php
+$imageUrl = null;
+if (!empty($chapter['image'])) {
+    $imageUrl = '/DungeonXplorer/public/images/chapters/' . $chapter['image'];
+}
+?>
+<?php if ($imageUrl): ?>
+    <img src="<?= htmlspecialchars($imageUrl) ?>" alt="Image du chapitre" />
+<?php else: ?>
+    <div>Aucune image</div>
+<?php endif; ?>
 
-    <div class="chapter-content">
-        <?= $contenu ?>
-    </div>
-</div>
+<h3>Héros</h3>
+<p>Nom: <?= htmlspecialchars($heroAfter['name'] ?? '') ?> — Classe: <?= htmlspecialchars($heroAfter['class_name'] ?? '') ?></p>
+<p>PV: <?= (int)($heroAfter['pv'] ?? 0) ?></p>
+<p>Mana: <?= (int)($heroAfter['mana'] ?? 0) ?></p>
+<p>Force: <?= (int)($heroAfter['strength'] ?? 0) ?></p>
+<p>Initiative: <?= (int)($heroAfter['initiative'] ?? 0) ?></p>
 
-<?php $contenu = ob_get_clean(); ?>
+<h3>Monstre</h3>
+<p>Nom: <?= htmlspecialchars($monsterAfter['name'] ?? '') ?></p>
+<p>PV: <?= (int)($monsterAfter['pv'] ?? 0) ?></p>
+<p>Mana: <?= $monsterAfter['mana'] === null ? '—' : (int)$monsterAfter['mana'] ?></p>
+<p>Force: <?= (int)($monsterAfter['strength'] ?? 0) ?></p>
+<p>Initiative: <?= (int)($monsterAfter['initiative'] ?? 0) ?></p>
+
+<h3>Journal</h3>
+<ul>
+    <?php foreach ($log as $line): ?>
+        <li><?= htmlspecialchars($line) ?></li>
+    <?php endforeach; ?>
+</ul>
+
+<?php if (!isset($outcome)): ?>
+    <form method="post">
+        <button type="submit" name="action" value="physical">Attaque physique</button>
+        <?php if (isset($heroAfter['class_name']) && strtolower($heroAfter['class_name']) === 'magicien' && (int)($heroAfter['mana'] ?? 0) >= 5): ?>
+            <button type="submit" name="action" value="magic">Attaque magique</button>
+        <?php endif; ?>
+        <button type="submit" name="action" value="potion_hp" <?= empty($hasPotionHP) ? 'disabled' : '' ?>><?= empty($hasPotionHP) ? 'Potion PV (0)' : 'Utiliser Potion PV' ?></button>
+        <button type="submit" name="action" value="potion_mana" <?= empty($hasPotionMana) ? 'disabled' : '' ?>><?= empty($hasPotionMana) ? 'Potion Mana (0)' : 'Utiliser Potion Mana' ?></button>
+    </form>
+<?php else: ?>
+    <p>Résultat final: <?php if ($outcome === 'hero_victory'): ?>Victoire<?php elseif ($outcome === 'hero_defeat'): ?>Défaite<?php else: ?>Match nul<?php endif; ?></p>
+<?php endif; ?>
+
+<?php $contenu = ob_get_clean(); require __DIR__ . "/../layout.php"; ?>
