@@ -60,14 +60,14 @@ INSERT INTO Level (class_id, level, required_xp, pv_bonus, mana_bonus, strength_
 -- ============================================================
 -- 1. ITEMS & MONSTRES
 -- ============================================================
-INSERT INTO Items (id, name, description, item_type) VALUES
+INSERT INTO Items (id, name, description, item_type, bonus) VALUES
 (1, 'Potion de Soin', 'Rend 10 PV.', 'Potion', 10),
 (2, 'Potion de Mana', 'Rend 5 Mana.', 'Potion', 5),
 (3, 'Épée Rouillée', 'Dégâts +1.', 'Arme', 1),
 (4, 'Épée Bâtarde', 'Dégâts +3.', 'Arme', 3),
-(5, 'Bouclier du Garde', 'Défense +2.', 'Bouclier'),
-(6, 'Clé de Fer Noir', 'Ouvre la tour du sorcier.', 'Clé'),
-(7, 'Grimoire Ancien', 'Une source de savoir magique.', 'Tresor');
+(5, 'Bouclier du Garde', 'Défense +2.', 'Bouclier', 2),
+(6, 'Clé de Fer Noir', 'Ouvre la tour du sorcier.', 'Clé', 0),
+(7, 'Grimoire Ancien', 'Une source de savoir magique.', 'Tresor', 0);
 
 INSERT INTO Monster (id, name, pv, mana, initiative, strength, attack, xp) VALUES
 (1, 'Sanglier Enragé', 15, 0, 4, 3, 'Charge', 10),

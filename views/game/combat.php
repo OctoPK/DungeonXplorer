@@ -26,6 +26,17 @@ if (!empty($chapter['image'])) {
             <?php endif; ?>
         </div>
 
+        <?php if (!empty($inventory) && is_array($inventory)): ?>
+            <aside class="combat-inventory">
+                <h4>Inventaire</h4>
+                <ul>
+                    <?php foreach ($inventory as $it): ?>
+                        <li><?= htmlspecialchars($it['name']) ?> x<?= (int)$it['quantity'] ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </aside>
+        <?php endif; ?>
+
         <div class="stats-combat">
             <div class="chapter-choices">
             <h3>Héros</h3>
