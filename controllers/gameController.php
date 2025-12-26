@@ -4,27 +4,27 @@
 class GameController {
 
     public function index() {
-        
+
         if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
-        
+
         if (!isset($_SESSION['user_id'])) { $_SESSION['user_id'] = 1; }
         $userId = $_SESSION['user_id'];
 
-      
+
         $db = Database::getConnection();
 
-        $sql = "SELECT Hero.*, Class.name AS class_name 
-                FROM Hero 
+        $sql = "SELECT Hero.*, Class.name AS class_name
+                FROM Hero
                 JOIN User_Heroes ON Hero.id = User_Heroes.hero_id
                 JOIN Class ON Hero.class_id = Class.id
                 WHERE User_Heroes.user_id = ?";
-        
+
         $stmt = $db->prepare($sql);
         $stmt->execute([$userId]);
         $hero = $stmt->fetch();
 
-        
+
         if ($hero) {
             $stmtLastProgress = $db->prepare(
                 "SELECT chapter_id
@@ -39,30 +39,30 @@ class GameController {
 
             require 'views/game/profile.php';
         } else {
-           
-            header('Location: game/create'); 
+
+            header('Location: game/create');
             exit();
         }
     }
 
     public function create() {
         $db = Database::getConnection();
-        
-        $requete = $db->query("SELECT * FROM Class"); 
+
+        $requete = $db->query("SELECT * FROM Class");
         $classes = $requete->fetchAll();
-        
+
         require 'views/game/create_heros.php';
     }
 
     public function store() {
         if (session_status() === PHP_SESSION_NONE) { session_start(); }
-        
+
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $db = Database::getConnection();
 
             try {
-               
+
                 if (!isset($_POST['hero_name']) || !isset($_POST['class_id'])) {
                     die("Erreur : Vous devez choisir un nom ET une classe ! <a href='create'>Retour</a>");
                 }
@@ -77,9 +77,9 @@ class GameController {
                 if ($classData) {
                     $db->beginTransaction();
 
-                    $sqlHero = "INSERT INTO Hero (name, class_id, pv, mana, strength, initiative) 
+                    $sqlHero = "INSERT INTO Hero (name, class_id, pv, mana, strength, initiative)
                                 VALUES (:name, :class_id, :pv, :mana, :strength, :initiative)";
-                    
+
                     $stmtHero = $db->prepare($sqlHero);
                     $stmtHero->execute([
                         ':name' => $nom,
@@ -101,8 +101,8 @@ class GameController {
 
                     $db->commit();
 
-                    
-                    header('Location: ../game'); 
+
+                    header('Location: ../game');
                     exit();
                 }
             } catch (PDOException $e) {
@@ -111,7 +111,7 @@ class GameController {
             }
         }
     }
-    
+
     public function play($id) {
         if (session_status() === PHP_SESSION_NONE) { session_start(); }
         $db = Database::getConnection();
@@ -138,7 +138,7 @@ class GameController {
             $stmtHero->execute([$userId]);
             $heroData = $stmtHero->fetch(PDO::FETCH_ASSOC);
 
-            
+
             if ($heroData) {
                 $heroId = $heroData['hero_id'];
                 //on met à joue la progression, d'abord on umet les chapitres précédents en complété et ensuite on met le nouveau chapitre traveré
@@ -158,7 +158,7 @@ class GameController {
                     $itemId = $treasure['item_id'];
                     $quantity = $treasure['quantity'];
                     $itemType = $treasure['item_type'];
-                    
+
                     if ($itemType === 'Arme') { //si c'est une arme ou un bouclier, on met dans la colonne adaptée dans la table héro vu qu'elle a une clonne poour
                         if ($heroEquip['primary_weapon_item_id'] === null) {
                             $stmtUpdate = $db->prepare("UPDATE Hero SET primary_weapon_item_id = ? WHERE id = ?");
@@ -276,21 +276,5 @@ class GameController {
             require 'views/game/chapitre.php';
         }
     }
-
-    public function tourCombat($attaquant, $defenseur) {
-
-        require 'views/game/combat.php';
-
-        /* TODO combat
-    action possible attaque physique, attaque magique (si perso magi et mana dispo)
-    utiliser une potion
-    exemple : regardé règle de combat.pdf parti pseudo code pour un tour de combat
-    
-    me reste le tour de combat à faire*/
-
-
-        require __DIR__ . "/../layout.php";
-        return $attaquant->pv > 0 && $defenseur->pv > 0 ? tourCombat($defenseur, $attaquant) : "Fin du combat";
-    }
 }
-?>        
+?>
