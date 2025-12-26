@@ -20,7 +20,7 @@ CREATE TABLE Items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     description TEXT,
-    item_type VARCHAR(50) NOT NULL -- Ex: 'Arme', 'Armure', 'Potion',
+    item_type VARCHAR(50) NOT NULL, -- Ex: 'Arme', 'Armure', 'Potion',
     bonus INT DEFAULT NULL
 );
 

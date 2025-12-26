@@ -64,10 +64,9 @@ class AuthController {
     }
 
     public function login() {
-        
+        $db = Database::getConnection();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $db = Database::getConnection();
-            
             $email = $_POST['email']; 
             $password = $_POST['password'];
 
@@ -103,8 +102,11 @@ class AuthController {
              ORDER BY hp.completion_date DESC
              LIMIT 1"
         );
-        $stmtLastProgress->execute([$_SESSION['user_id']]);
-        $lastProgress = $stmtLastProgress->fetch(PDO::FETCH_ASSOC);
+        $lastProgress = null;
+        if (isset($_SESSION['user_id'])) {
+            $stmtLastProgress->execute([$_SESSION['user_id']]);
+            $lastProgress = $stmtLastProgress->fetch(PDO::FETCH_ASSOC);
+        }
       
         require 'views/auth/login.php';
     }
@@ -116,4 +118,3 @@ class AuthController {
         exit;
     }
 }
-?>  

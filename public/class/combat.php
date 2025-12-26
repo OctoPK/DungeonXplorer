@@ -105,6 +105,8 @@ class CombatEngine
                         $hero['pv'] = $hero['pv'] + $amount;
                         $this->consumePotion($hero['id'], 'Potion PV', 1);
                         $log[] = "{$hero['name']} boit une Potion PV et récupère {$amount} PV (PV={$hero['pv']})";
+                            // Persist immediate change to hero PV after potion
+                            if (isset($hero['id'])) $this->persistHeroState($hero);
                     } else {
                         $log[] = "{$hero['name']} n'a pas de Potion PV";
                     }
@@ -114,6 +116,8 @@ class CombatEngine
                         $hero['mana'] = $hero['mana'] + $amount;
                         $this->consumePotion($hero['id'], 'Potion Mana', 1);
                         $log[] = "{$hero['name']} boit une Potion Mana et récupère {$amount} mana (Mana={$hero['mana']})";
+                            // Persist immediate change to hero mana after potion
+                            if (isset($hero['id'])) $this->persistHeroState($hero);
                     } else {
                         $log[] = "{$hero['name']} n'a pas de Potion Mana";
                     }
@@ -147,6 +151,7 @@ class CombatEngine
                         $hero['pv'] -= $dmg;
                         $monster['mana'] -= $cost;
                         $log[] = "{$monster['name']} lance un sort de ({$atk}) dégats et vous vous défendez de ({$def}) → vous subissez {$dmg} dégats (vous êtes à {$hero['pv']} PV)";
+                        if (isset($hero['id'])) $this->persistHeroState($hero);
                     }
                 } else {
                     $atk = $this->physicalAttack($monster);
@@ -154,6 +159,7 @@ class CombatEngine
                     $dmg = max(0, $atk - $def);
                     $hero['pv'] -= $dmg;
                     $log[] = "{$monster['name']} attaque à hauteur de ({$atk}) dégats et vous vous défendez de ({$def}) → vous subissez {$dmg} dégats (vous êtes à {$hero['pv']} PV)";
+                    if (isset($hero['id'])) $this->persistHeroState($hero);
                 }
             }
         }
@@ -166,6 +172,9 @@ class CombatEngine
         } elseif ($hero['pv'] <= 0) {
             $log[] = "{$hero['name']} est mort...";
             $resultat = 'hero_defeat';
+            $this->persistHeroState($hero);
+        }
+        if (isset($hero['id'])) {
             $this->persistHeroState($hero);
         }
 
@@ -259,15 +268,29 @@ class CombatEngine
 
     protected function hasPotion($heroId, $type)
     {
-        $stmt = $this->db->prepare("SELECT Inventory.quantity FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ? AND Inventory.quantity > 0");
-        $stmt->execute([$heroId, $type]);
+        if ($type === 'Potion PV') {
+            $nameLike = '%Soin%';
+        } elseif ($type === 'Potion Mana') {
+            $nameLike = '%Mana%';
+        } else {
+            $nameLike = '%Potion%';
+        }
+        $stmt = $this->db->prepare("SELECT Inventory.quantity FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ? AND Items.name LIKE ? AND Inventory.quantity > 0 LIMIT 1");
+        $stmt->execute([$heroId, 'Potion', $nameLike]);
         return (bool)$stmt->fetchColumn();
     }
 
     protected function consumePotion($heroId, $type, $qty = 1)
     {
-        $stmt = $this->db->prepare("SELECT Inventory.id, Inventory.quantity, Items.id AS item_id FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ? LIMIT 1");
-        $stmt->execute([$heroId, $type]);
+        if ($type === 'Potion PV') {
+            $nameLike = '%Soin%';
+        } elseif ($type === 'Potion Mana') {
+            $nameLike = '%Mana%';
+        } else {
+            $nameLike = '%Potion%';
+        }
+        $stmt = $this->db->prepare("SELECT Inventory.id, Inventory.quantity, Items.id AS item_id FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ? AND Items.name LIKE ? LIMIT 1");
+        $stmt->execute([$heroId, 'Potion', $nameLike]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $newQ = max(0, $row['quantity'] - $qty);
@@ -321,8 +344,23 @@ class CombatEngine
                 if ($roll <= $chance) {
                     $ins = $this->db->prepare("INSERT INTO Inventory (hero_id, item_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + ?");
                     $ins->execute([$h['id'], $loot['item_id'], $loot['quantity'], $loot['quantity']]);
-                    $log[] = "Butin obtenu : item_id={$loot['item_id']} x{$loot['quantity']}";
+                    $stmtName = $this->db->prepare("SELECT name FROM Items WHERE id = ? LIMIT 1");
+                    $stmtName->execute([$loot['item_id']]);
+                    $iname = $stmtName->fetchColumn();
+                    $iname = $iname ?: ('item#' . $loot['item_id']);
+                    $log[] = "Butin obtenu : {$iname} x{$loot['quantity']}";
                 }
+            }
+
+            $specialItems = [1, 2];
+            foreach ($specialItems as $sId) {
+                $insS = $this->db->prepare("INSERT INTO Inventory (hero_id, item_id, quantity) VALUES (?, ?, 1) ON DUPLICATE KEY UPDATE quantity = quantity + 1");
+                $insS->execute([$h['id'], $sId]);
+                $stmtName = $this->db->prepare("SELECT name FROM Items WHERE id = ? LIMIT 1");
+                $stmtName->execute([$sId]);
+                $sname = $stmtName->fetchColumn();
+                $sname = $sname ?: ('item#' . $sId);
+                $log[] = "Butin spécial ajouté : {$sname} x1";
             }
 
             $this->db->commit();

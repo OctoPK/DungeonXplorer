@@ -190,6 +190,24 @@ class GameController {
                     }
                 }
             }
+
+            $stmtInv = $db->prepare("SELECT i.id, i.name, i.item_type, inv.quantity FROM Inventory inv JOIN Items i ON inv.item_id = i.id WHERE inv.hero_id = ?");
+            $stmtInv->execute([$heroId]);
+            $inventory = $stmtInv->fetchAll(PDO::FETCH_ASSOC);
+
+            if ((int)$chapterId === 36) {
+                $stmtKey = $db->prepare("SELECT Inventory.quantity FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.name = ? AND Inventory.quantity > 0 LIMIT 1");
+                $stmtKey->execute([$heroId, 'clé']);
+                $hasKey = (bool)$stmtKey->fetchColumn();
+                if (!$hasKey) {
+                    foreach ($links as &$link) {
+                        if ((int)$link['next_chapter_id'] === 40) {
+                            $link['disabled'] = true;
+                        }
+                    }
+                    unset($link);
+                }
+            }
         }
 
         $stmtCombat = $db->prepare(
@@ -252,11 +270,14 @@ class GameController {
 
                 $heroAfter = $result['hero'];
                 $monsterAfter = $result['monster'];
-                $stmtPot = $db->prepare("SELECT SUM(Inventory.quantity) as q FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ?");
-                $stmtPot->execute([$heroId, 'Potion PV']);
+                $stmtPot = $db->prepare("SELECT SUM(Inventory.quantity) as q FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ? AND Items.name LIKE ?");
+                $stmtPot->execute([$heroId, 'Potion', '%Soin%']);
                 $hasPotionHP = (int)$stmtPot->fetchColumn() > 0;
-                $stmtPot->execute([$heroId, 'Potion Mana']);
+                $stmtPot->execute([$heroId, 'Potion', '%Mana%']);
                 $hasPotionMana = (int)$stmtPot->fetchColumn() > 0;
+                $stmtInv = $db->prepare("SELECT i.id, i.name, i.item_type, inv.quantity FROM Inventory inv JOIN Items i ON inv.item_id = i.id WHERE inv.hero_id = ?");
+                $stmtInv->execute([$heroId]);
+                $inventory = $stmtInv->fetchAll(PDO::FETCH_ASSOC);
 
                 require 'views/game/combat.php';
                 return;
@@ -265,11 +286,17 @@ class GameController {
             $log = ["Combat préparé : vous pouvez choisir une action."];
             $heroAfter = $heroFull;
             $monsterAfter = $monsterState;
-            $stmtPot = $db->prepare("SELECT SUM(Inventory.quantity) as q FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ?");
-            $stmtPot->execute([$heroId, 'Potion PV']);
+            $stmtPot = $db->prepare("SELECT SUM(Inventory.quantity) as q FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.item_type = ? AND Items.name LIKE ?");
+            $stmtPot->execute([$heroId, 'Potion', '%Soin%']);
             $hasPotionHP = (int)$stmtPot->fetchColumn() > 0;
-            $stmtPot->execute([$heroId, 'Potion Mana']);
+            $stmtPot->execute([$heroId, 'Potion', '%Mana%']);
             $hasPotionMana = (int)$stmtPot->fetchColumn() > 0;
+
+                if (!isset($inventory)) {
+                    $stmtInv = $db->prepare("SELECT i.id, i.name, i.item_type, inv.quantity FROM Inventory inv JOIN Items i ON inv.item_id = i.id WHERE inv.hero_id = ?");
+                    $stmtInv->execute([$heroId]);
+                    $inventory = $stmtInv->fetchAll(PDO::FETCH_ASSOC);
+                }
 
             require 'views/game/combat.php';
         } else {
