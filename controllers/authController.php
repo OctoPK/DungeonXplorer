@@ -38,7 +38,6 @@ class AuthController {
                 exit;
             }
 
-
             $hash = password_hash($password, PASSWORD_DEFAULT);
 
             try {
@@ -86,8 +85,7 @@ class AuthController {
 
                 $_SESSION['flash_message'] = "Bon retour parmi nous, " . $user['username'] . " !";
                 
-               
-                header('Location: game'); 
+               $_SESSION['role'] === 'admin' ? header('Location: admin') : header('Location: game'); 
                 exit;
 
             } else {
@@ -97,6 +95,16 @@ class AuthController {
             }
         }
 
+        $stmtLastProgress = $db->prepare(
+            "SELECT chapter_id
+             FROM Hero_Progress hp
+             JOIN User_Heroes uh ON hp.hero_id = uh.hero_id
+             WHERE uh.user_id = ?
+             ORDER BY hp.completion_date DESC
+             LIMIT 1"
+        );
+        $stmtLastProgress->execute([$_SESSION['user_id']]);
+        $lastProgress = $stmtLastProgress->fetch(PDO::FETCH_ASSOC);
       
         require 'views/auth/login.php';
     }
@@ -108,4 +116,4 @@ class AuthController {
         exit;
     }
 }
-?>
+?>  

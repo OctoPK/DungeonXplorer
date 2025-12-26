@@ -26,6 +26,17 @@ class GameController {
 
         
         if ($hero) {
+            $stmtLastProgress = $db->prepare(
+                "SELECT chapter_id
+                 FROM Hero_Progress hp
+                 JOIN User_Heroes uh ON hp.hero_id = uh.hero_id
+                 WHERE uh.user_id = ?
+                 ORDER BY hp.completion_date DESC
+                 LIMIT 1"
+            );
+            $stmtLastProgress->execute([$userId]);
+            $lastProgress = $stmtLastProgress->fetch(PDO::FETCH_ASSOC);
+
             require 'views/game/profile.php';
         } else {
            
@@ -121,13 +132,13 @@ class GameController {
         );
         $stmtLinks->execute([$chapterId]);
         $links = $stmtLinks->fetchAll(PDO::FETCH_ASSOC);
-
         if (isset($_SESSION['user_id'])) { //on récupère l'id du héro pour ajouter les items rencontrés dans les chapitres
             $userId = $_SESSION['user_id'];
             $stmtHero = $db->prepare("SELECT hero_id FROM User_Heroes WHERE user_id = ?");
             $stmtHero->execute([$userId]);
             $heroData = $stmtHero->fetch(PDO::FETCH_ASSOC);
 
+            
             if ($heroData) {
                 $heroId = $heroData['hero_id'];
                 //on met à joue la progression, d'abord on umet les chapitres précédents en complété et ensuite on met le nouveau chapitre traveré

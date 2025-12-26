@@ -25,8 +25,8 @@
                 <p class="text-white-50">Niveau <?= $hero['current_level'] ?> | XP: <?= $hero['xp'] ?></p>
 
            
-                <a href="/DungeonXplorer/chapter/1" class="btn bouton-action-principal w-100 mt-3">
-                    <i class="fa-solid fa-scroll me-2"></i> Lire le Chapitre 1
+                <a href="/DungeonXplorer/chapter/<?= $lastProgress ? $lastProgress['chapter_id'] : 1 ?>" class="btn bouton-action-principal w-100 mt-3">
+                    <i class="fa-solid fa-scroll me-2"></i> Lire le Chapitre <?= $lastProgress ? 'suivant' : '1' ?>
                 </a>
             </div>
         </div>
