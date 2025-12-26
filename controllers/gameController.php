@@ -196,8 +196,8 @@ class GameController {
             $inventory = $stmtInv->fetchAll(PDO::FETCH_ASSOC);
 
             if ((int)$chapterId === 36) {
-                $stmtKey = $db->prepare("SELECT Inventory.quantity FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.name = ? AND Inventory.quantity > 0 LIMIT 1");
-                $stmtKey->execute([$heroId, 'clé']);
+                $stmtKey = $db->prepare("SELECT Inventory.quantity FROM Inventory JOIN Items ON Inventory.item_id = Items.id WHERE Inventory.hero_id = ? AND Items.name like(?) AND Inventory.quantity > 0 LIMIT 1");
+                $stmtKey->execute([$heroId, '%Clé%']);
                 $hasKey = (bool)$stmtKey->fetchColumn();
                 if (!$hasKey) {
                     foreach ($links as &$link) {

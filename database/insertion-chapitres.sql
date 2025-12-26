@@ -36,7 +36,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- ============================================================
 -- 1. CLASSES (AJOUTÉ ICI)
 -- ============================================================
-INSERT INTO Class (id, name, description, base_pv, base_mana, strength, initiative, max_items) VALUES 
+INSERT INTO Class (id, name, description, base_pv, base_mana, strength, initiative, max_items) VALUES
 (1, 'Guerrier', 'Un combattant robuste, expert au corps à corps.', 100, 0, 10, 5, 5),
 (2, 'Voleur', 'Rapide et agile, il frappe avant les autres.', 70, 10, 6, 8, 8),
 (3, 'Magicien', 'Faible physiquement mais doté de pouvoirs dévastateurs.', 60, 50, 4, 4, 5);
@@ -82,7 +82,7 @@ INSERT INTO Monster (id, name, pv, mana, initiative, strength, attack, xp) VALUE
 
 -- Loot (L'Ogre donne la clé indispensable)
 INSERT INTO Monster_Loot (monster_id, item_id, drop_rate) VALUES
-(6, 6, 1.00), 
+(6, 6, 1.00),
 (6, 1, 0.50); -- 50% de chance d'avoir une potion en plus
 
 -- ============================================================
@@ -277,6 +277,8 @@ INSERT INTO Links (chapter_id, next_chapter_id, description) VALUES
 
 (46, 47, 'Prendre l''escalier'),
 (46, 48, 'Sauter !'),
+
+(47, 10, 'Défaite...'),
 
 (48, 50, 'Nager vers la rive'),
 (50, 1, 'Recommencer');
