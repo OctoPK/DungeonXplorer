@@ -40,4 +40,4 @@ Projet réalisé par :
 * [Junior Lombo Kiala]
 * [Hichem Chellal]
 * [Marin Lerondel--Touzé]
-* [Armand Biguey]
+* <https://github.com/OctoPK>
