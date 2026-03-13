@@ -37,7 +37,7 @@ Pour cette V1, on a mis en place :
 
 ## L'équipe
 Projet réalisé par :
-* [Junior Lombo Kiala]
-* [Hichem Chellal]
-* [Marin Lerondel--Touzé]
-* [Armand Biguey]
+* <https://github.com/Juniorr27>
+* <https://github.com/Hichem1914>
+* <https://github.com/marinlrdl>
+* <https://github.com/OctoPK>
